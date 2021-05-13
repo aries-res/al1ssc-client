@@ -111,7 +111,8 @@ export const Banner01DataSource = {
   },
   content: {
     className: "banner0-content",
-    children: "A Joint Effort of ISRO & ARIES",
+    children:
+      "A community service centre to help you prepare science observing proposals and analyze science data from Aditya-L1",
   },
   button: { className: "banner0-button", children: "Learn More" },
 };
@@ -325,13 +326,13 @@ export const Content30DataSource = {
     children: [
       {
         name: "title",
-        children: "Ant Financial Cloud provides professional services",
+        children: "WHY",
         className: "title-h1",
       },
       {
         name: "content",
         className: "title-content",
-        children: "Based on Alibaba Cloud's powerful basic resources",
+        children: "Aditya-L1 Science Support Cell has the following purposes",
       },
     ],
   },
@@ -341,7 +342,7 @@ export const Content30DataSource = {
       {
         name: "block0",
         className: "content3-block",
-        md: 8,
+        md: 12,
         xs: 24,
         children: {
           icon: {
@@ -357,14 +358,14 @@ export const Content30DataSource = {
           content: {
             className: "content3-content",
             children:
-              "Centralized orchestration of cloud resources, elastic scaling, continuous release and deployment, high availability and disaster tolerance.",
+              "Jointly work with ISRO to maximize utilization of science data from Aditya-L1.",
           },
         },
       },
       {
         name: "block1",
         className: "content3-block",
-        md: 8,
+        md: 12,
         xs: 24,
         children: {
           icon: {
@@ -377,14 +378,14 @@ export const Content30DataSource = {
           content: {
             className: "content3-content",
             children:
-              "A complete cloud security system built in accordance with the security requirements of financial enterprises to fully guarantee the security of financial applications and data.",
+              "Develop specific tools to assist guest observers to prepare proposals for Aditya-L1 observations.",
           },
         },
       },
       {
         name: "block2",
         className: "content3-block",
-        md: 8,
+        md: 12,
         xs: 24,
         children: {
           icon: {
@@ -397,14 +398,14 @@ export const Content30DataSource = {
           content: {
             className: "content3-content",
             children:
-              "Distributed cloud environment centralized monitoring, unified resource and application status view, intelligent analysis and fault location.",
+              "Design and develop required analysis software (for handling data beyond Level-2) in consultation with ISRO.",
           },
         },
       },
       {
         name: "block3",
         className: "content3-block",
-        md: 8,
+        md: 12,
         xs: 24,
         children: {
           icon: {
@@ -417,53 +418,316 @@ export const Content30DataSource = {
           content: {
             className: "content3-content",
             children:
-              "One-stop mobile financial APP development and comprehensive monitoring; abundant available components, dynamic release and fault hot repair.",
+              "Establish periodic training of the national user community om data analysis and proposal preparation.",
           },
+        },
+      },
+      // {
+      //   name: "block4",
+      //   className: "content3-block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     icon: {
+      //       className: "content3-icon",
+      //       children:
+      //         "https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png",
+      //     },
+      //     textWrapper: { className: "content3-text" },
+      //     title: {
+      //       className: "content3-title",
+      //       children: "Distributed middleware",
+      //     },
+      //     content: {
+      //       className: "content3-content",
+      //       children:
+      //         "Financial-level online transaction processing middleware, large-scale distributed computers, and tens of thousands of transactions/second level concurrency, strictly guarantee the unity of transaction data.",
+      //     },
+      //   },
+      // },
+      // {
+      //   name: "block5",
+      //   className: "content3-block",
+      //   md: 8,
+      //   xs: 24,
+      //   children: {
+      //     icon: {
+      //       className: "content3-icon",
+      //       children:
+      //         "https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png",
+      //     },
+      //     textWrapper: { className: "content3-text" },
+      //     title: { className: "content3-title", children: "Big Data" },
+      //     content: {
+      //       className: "content3-content",
+      //       children:
+      //         "One-stop, full-cycle big data collaborative work platform, PB-level data processing, millisecond-level data analysis tools.",
+      //     },
+      //   },
+      // },
+    ],
+  },
+};
+export const Feature20DataSource = {
+  wrapper: { className: "home-page-wrapper content2-wrapper" },
+  OverPack: { className: "home-page content2", playScale: 0.3 },
+  imgWrapper: { className: "content2-img", md: 10, xs: 24 },
+  img: {
+    children: ["Fig1.png", "Fig2.png", "Fig3.jpg"],
+  },
+  textWrapper: { className: "content2-text", md: 14, xs: 24 },
+  title: { className: "content2-title", children: "WHAT" },
+  content: {
+    className: "content2-content",
+    children: [
+      "Aditya-L1 mission is India's first dedicated spacecraft mission to study the Sun. The Aditya-L1 will be inserted in a halo orbit around the L1 (Lagrange 1) point, which is about 1.5 million km from Earth. It will enable a comprehensive understanding of the dynamical processes of the Sun and address some of the outstanding problems in solar physics and heliophysics. You can read more interesting details about the mission here.",
+      "As a joint effort of ISRO and ARIES, the Aditya-L1 Science Support Cell has been set up to act as a community service centre for the guest observers in preparing science observing proposals and analyzing science data. This support cell provides you tools and documentation required to understand, download and analyse the data. It will maintain the updates and will also provide an online help desk with professional researchers and PhD students on-board.",
+    ],
+  },
+};
+export const Feature70DataSource = {
+  wrapper: { className: "home-page-wrapper feature7-wrapper" },
+  page: { className: "home-page feature7" },
+  OverPack: { playScale: 0.3 },
+  titleWrapper: {
+    className: "feature7-title-wrapper",
+    children: [
+      {
+        name: "title",
+        className: "feature7-title-h1",
+        children: "Recent Updates",
+      },
+      {
+        name: "content",
+        className: "feature7-title-content",
+        children: "",
+      },
+    ],
+  },
+  blockWrapper: {
+    className: "feature7-block-wrapper",
+    gutter: 24,
+    children: [
+      {
+        md: 8,
+        xs: 24,
+        name: "block0",
+        className: "feature7-block",
+        children: {
+          className: "feature7-block-group",
+          children: [
+            {
+              name: "image",
+              className: "feature7-block-image",
+              children:
+                "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+            },
+            {
+              name: "title",
+              className: "feature7-block-title",
+              children: "2021-05-12",
+            },
+            {
+              name: "content",
+              className: "feature7-block-content",
+              children:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            },
+          ],
         },
       },
       {
-        name: "block4",
-        className: "content3-block",
         md: 8,
         xs: 24,
+        name: "block1",
+        className: "feature7-block",
         children: {
-          icon: {
-            className: "content3-icon",
-            children:
-              "https://zos.alipayobjects.com/rmsportal/UsUmoBRyLvkIQeO.png",
-          },
-          textWrapper: { className: "content3-text" },
-          title: {
-            className: "content3-title",
-            children: "Distributed middleware",
-          },
-          content: {
-            className: "content3-content",
-            children:
-              "Financial-level online transaction processing middleware, large-scale distributed computers, and tens of thousands of transactions/second level concurrency, strictly guarantee the unity of transaction data.",
-          },
+          className: "feature7-block-group",
+          children: [
+            {
+              name: "image",
+              className: "feature7-block-image",
+              children:
+                "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+            },
+            {
+              name: "title",
+              className: "feature7-block-title",
+              children: "2021-04-30",
+            },
+            {
+              name: "content",
+              className: "feature7-block-content",
+              children:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            },
+          ],
         },
       },
       {
-        name: "block5",
-        className: "content3-block",
         md: 8,
         xs: 24,
+        name: "block2",
+        className: "feature7-block",
         children: {
-          icon: {
-            className: "content3-icon",
-            children:
-              "https://zos.alipayobjects.com/rmsportal/ipwaQLBLflRfUrg.png",
-          },
-          textWrapper: { className: "content3-text" },
-          title: { className: "content3-title", children: "Big Data" },
-          content: {
-            className: "content3-content",
-            children:
-              "One-stop, full-cycle big data collaborative work platform, PB-level data processing, millisecond-level data analysis tools.",
-          },
+          className: "feature7-block-group",
+          children: [
+            {
+              name: "image",
+              className: "feature7-block-image",
+              children:
+                "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+            },
+            {
+              name: "title",
+              className: "feature7-block-title",
+              children: "2021-04-15",
+            },
+            {
+              name: "content",
+              className: "feature7-block-content",
+              children:
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            },
+          ],
         },
       },
+      // {
+      //   md: 6,
+      //   xs: 24,
+      //   name: "block3",
+      //   className: "feature7-block",
+      //   children: {
+      //     className: "feature7-block-group",
+      //     children: [
+      //       {
+      //         name: "image",
+      //         className: "feature7-block-image",
+      //         children:
+      //           "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+      //       },
+      //       {
+      //         name: "title",
+      //         className: "feature7-block-title",
+      //         children: "身份证",
+      //       },
+      //       {
+      //         name: "content",
+      //         className: "feature7-block-content",
+      //         children:
+      //           "Establish periodic training of the national user community om data analysis and proposal preparation",
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   md: 6,
+      //   xs: 24,
+      //   name: "block4",
+      //   className: "feature7-block",
+      //   children: {
+      //     className: "feature7-block-group",
+      //     children: [
+      //       {
+      //         name: "image",
+      //         className: "feature7-block-image",
+      //         children:
+      //           "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+      //       },
+      //       {
+      //         name: "title",
+      //         className: "feature7-block-title",
+      //         children: "身份证",
+      //       },
+      //       {
+      //         name: "content",
+      //         className: "feature7-block-content",
+      //         children: "识别身份证正反面姓名、身份证号、发证机关等相关信息",
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   md: 6,
+      //   xs: 24,
+      //   name: "block5",
+      //   className: "feature7-block",
+      //   children: {
+      //     className: "feature7-block-group",
+      //     children: [
+      //       {
+      //         name: "image",
+      //         className: "feature7-block-image",
+      //         children:
+      //           "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+      //       },
+      //       {
+      //         name: "title",
+      //         className: "feature7-block-title",
+      //         children: "身份证",
+      //       },
+      //       {
+      //         name: "content",
+      //         className: "feature7-block-content",
+      //         children: "识别身份证正反面姓名、身份证号、发证机关等相关信息",
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   md: 6,
+      //   xs: 24,
+      //   name: "block6",
+      //   className: "feature7-block",
+      //   children: {
+      //     className: "feature7-block-group",
+      //     children: [
+      //       {
+      //         name: "image",
+      //         className: "feature7-block-image",
+      //         children:
+      //           "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+      //       },
+      //       {
+      //         name: "title",
+      //         className: "feature7-block-title",
+      //         children: "身份证",
+      //       },
+      //       {
+      //         name: "content",
+      //         className: "feature7-block-content",
+      //         children: "识别身份证正反面姓名、身份证号、发证机关等相关信息",
+      //       },
+      //     ],
+      //   },
+      // },
+      // {
+      //   md: 6,
+      //   xs: 24,
+      //   name: "block7",
+      //   className: "feature7-block",
+      //   children: {
+      //     className: "feature7-block-group",
+      //     children: [
+      //       {
+      //         name: "image",
+      //         className: "feature7-block-image",
+      //         children:
+      //           "https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg",
+      //       },
+      //       {
+      //         name: "title",
+      //         className: "feature7-block-title",
+      //         children: "身份证",
+      //       },
+      //       {
+      //         name: "content",
+      //         className: "feature7-block-content",
+      //         children: "识别身份证正反面姓名、身份证号、发证机关等相关信息",
+      //       },
+      //     ],
+      //   },
+      // },
     ],
   },
 };
@@ -481,15 +745,14 @@ export const Footer10DataSource = {
         className: "block",
         title: {
           className: "logo",
-          children:
-            "https://zos.alipayobjects.com/rmsportal/qqaimmXZVSwAhpL.svg",
+          children: "AL1SSC_title.svg",
         },
         childWrapper: {
-          className: "slogan",
+          // className: "slogan",
           children: [
             {
               name: "content0",
-              children: "Animation specification and components of Ant Design.",
+              children: "A joint effort of ISRO & ARIES",
             },
           ],
         },
@@ -499,13 +762,15 @@ export const Footer10DataSource = {
         xs: 24,
         md: 8,
         className: "block",
-        title: { children: "Product" },
+        title: { children: "Collaborating Institutes" },
         childWrapper: {
           children: [
-            { name: "link0", href: "#", children: "Product update record" },
-            { name: "link1", href: "#", children: "API Documentation" },
-            { name: "link2", href: "#", children: "Quick start" },
-            { name: "link3", href: "#", children: "Reference guide" },
+            { name: "link0", href: "#", children: "IUCAA" },
+            { name: "link1", href: "#", children: "PRL" },
+            { name: "link2", href: "#", children: "IISER Kolkata" },
+            { name: "link3", href: "#", children: "IISER Pune" },
+            { name: "link4", href: "#", children: "IIT BHU" },
+            { name: "link5", href: "#", children: "TIFR" },
           ],
         },
       },
@@ -522,19 +787,19 @@ export const Footer10DataSource = {
           ],
         },
       },
-      {
-        name: "block3",
-        xs: 24,
-        md: 8,
-        className: "block",
-        title: { children: "Resources" },
-        childWrapper: {
-          children: [
-            { href: "#", name: "link0", children: "Ant Design" },
-            { href: "#", name: "link1", children: "Ant Motion" },
-          ],
-        },
-      },
+      // {
+      //   name: "block3",
+      //   xs: 24,
+      //   md: 8,
+      //   className: "block",
+      //   title: { children: "Resources" },
+      //   childWrapper: {
+      //     children: [
+      //       { href: "#", name: "link0", children: "Ant Design" },
+      //       { href: "#", name: "link1", children: "Ant Motion" },
+      //     ],
+      //   },
+      // },
     ],
   },
   copyrightWrapper: { className: "copyright-wrapper" },
@@ -543,8 +808,7 @@ export const Footer10DataSource = {
     className: "copyright",
     children: (
       <span>
-        ©2021 by <a href="https://motion.ant.design">Ant Motion</a> All Rights
-        Reserved
+        ©2021 by <a href="https://aries.res.in">ARIES</a>
       </span>
     ),
   },

@@ -1,14 +1,14 @@
-import React from 'react';
-import TweenOne from 'rc-tween-one';
-import OverPack from 'rc-scroll-anim/lib/ScrollOverPack';
-import QueueAnim from 'rc-queue-anim';
-import { Row, Col } from 'antd';
-import { getChildrenToRender } from './utils';
-import { isImg } from './utils';
+import React from "react";
+import TweenOne from "rc-tween-one";
+import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
+import QueueAnim from "rc-queue-anim";
+import { Row, Col } from "antd";
+import { getChildrenToRender } from "./utils";
+import { isImg } from "./utils";
 
 class Footer extends React.Component {
   static defaultProps = {
-    className: 'footer1',
+    className: "footer1",
   };
 
   getLiChildren = (data) =>
@@ -17,8 +17,9 @@ class Footer extends React.Component {
       return (
         <Col key={i.toString()} {...itemProps} title={null} content={null}>
           <h2 {...title}>
-            {typeof title.children === 'string' &&
-            title.children.match(isImg) ? (
+            {/* {typeof title.children === 'string' &&
+            title.children.match(isImg) */}
+            {title.children.endsWith(".svg") ? (
               <img src={title.children} width="100%" alt="img" />
             ) : (
               title.children
@@ -50,7 +51,7 @@ class Footer extends React.Component {
             {childrenToRender}
           </QueueAnim>
           <TweenOne
-            animation={{ y: '+=30', opacity: 0, type: 'from' }}
+            animation={{ y: "+=30", opacity: 0, type: "from" }}
             key="copyright"
             {...dataSource.copyrightWrapper}
           >
