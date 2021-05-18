@@ -37,21 +37,19 @@ function Content2(props) {
         xs: dataSource.imgWrapper.xs,
       }}
     >
-      <span {...dataSource.img}>
-        <Carousel autoplay>
-          {dataSource.img.children.map((child) => (
-            <div>
-              <img src={child} width="100%" alt="img" />
-            </div>
-          ))}
-        </Carousel>
-      </span>
+      <Carousel autoplay className={dataSource.img.className}>
+        {dataSource.img.children.map((child) => (
+          <div>
+            <img src={child} width="100%" alt="img" />
+          </div>
+        ))}
+      </Carousel>
     </TweenOne>
   );
   return (
     <div {...tagProps} {...dataSource.wrapper}>
       <OverPack {...dataSource.OverPack} component={Row}>
-        {isMobile && img}
+        {/* {isMobile && img} */}
         <QueueAnim
           type={animType.queue}
           key="text"
@@ -73,7 +71,8 @@ function Content2(props) {
             </div>
           ))}
         </QueueAnim>
-        {!isMobile && img}
+        {/* {!isMobile && img} */}
+        {img}
       </OverPack>
     </div>
   );

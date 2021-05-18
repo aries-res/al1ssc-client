@@ -473,6 +473,7 @@ export const Feature20DataSource = {
   OverPack: { className: "home-page content2", playScale: 0.3 },
   imgWrapper: { className: "content2-img", md: 10, xs: 24 },
   img: {
+    className: "content2-img-inner",
     children: ["Fig1.png", "Fig2.png", "Fig3.jpg"],
   },
   textWrapper: { className: "content2-text", md: 14, xs: 24 },
