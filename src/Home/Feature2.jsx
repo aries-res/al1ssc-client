@@ -1,8 +1,10 @@
 import React from "react";
 import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
-import { Row, Col, Carousel } from "antd";
+import { Row, Col, Carousel, Card } from "antd";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
+
+const { Meta } = Card;
 
 function Content2(props) {
   const { ...tagProps } = props;
@@ -37,13 +39,16 @@ function Content2(props) {
         xs: dataSource.imgWrapper.xs,
       }}
     >
-      <Carousel autoplay className={dataSource.img.className}>
-        {dataSource.img.children.map((child) => (
-          <div>
-            <img src={child} width="100%" alt="img" />
-          </div>
-        ))}
-      </Carousel>
+      <Card bordered className="card">
+        <Carousel autoplay className={dataSource.img.className}>
+          {dataSource.img.children.map((child) => (
+            <div className="captioned-img">
+              <img src={child.path} width="100%" alt="img" />
+              <p className="caption">{child.caption}</p>
+            </div>
+          ))}
+        </Carousel>
+      </Card>
     </TweenOne>
   );
   return (

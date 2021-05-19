@@ -471,12 +471,28 @@ export const Content30DataSource = {
 export const Feature20DataSource = {
   wrapper: { className: "home-page-wrapper content2-wrapper" },
   OverPack: { className: "home-page content2", playScale: 0.3 },
-  imgWrapper: { className: "content2-img", md: 10, xs: 24 },
+  imgWrapper: { className: "content2-img", md: 12, xs: 24 },
   img: {
     className: "content2-img-inner",
-    children: ["Fig1.png", "Fig2.png", "Fig3.jpg"],
+    children: [
+      {
+        path: "Fig1.png",
+        caption:
+          "A white-light image of the corona (background grey-scaled image) taken during a total eclipse by Miloslav Druckmüller highlights the  FOV  of the VELC white-light image. The central disk image is obtained by the IRIS instrument from a special  mosaic of the Mg II k line (the same line will be observed by SUIT). The location of the four slits of VELC is marked in red.  The inner black square shows the spectroscopic FOV of the VELC.",
+      },
+      {
+        path: "Fig2.png",
+        caption:
+          "A comparison of field of views of Aditya-L1 coronagraph with upcoming missions.",
+      },
+      {
+        path: "Fig3.jpg",
+        caption:
+          "A comparison of in-situ magnetic field and solar wind speed measurement with a prediction model (shown in red) developed by `Pal et al. (2017)`. The in-situ measured parameters will be provided by Aditya-L1 instruments in the future.",
+      },
+    ],
   },
-  textWrapper: { className: "content2-text", md: 14, xs: 24 },
+  textWrapper: { className: "content2-text", md: 12, xs: 24 },
   title: { className: "content2-title", children: "WHAT" },
   content: {
     className: "content2-content",
