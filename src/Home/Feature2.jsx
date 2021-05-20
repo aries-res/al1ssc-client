@@ -3,8 +3,7 @@ import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
 import { Row, Col, Carousel, Card } from "antd";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
-
-const { Meta } = Card;
+import marked from "marked";
 
 function Content2(props) {
   const { ...tagProps } = props;
@@ -44,7 +43,10 @@ function Content2(props) {
           {dataSource.img.children.map((child) => (
             <div className="captioned-img">
               <img src={child.path} width="100%" alt="img" />
-              <p className="caption">{child.caption}</p>
+              <p
+                className="caption"
+                dangerouslySetInnerHTML={{ __html: marked(child.caption) }}
+              ></p>
             </div>
           ))}
         </Carousel>
@@ -71,9 +73,10 @@ function Content2(props) {
             {dataSource.title.children}
           </h2>
           {dataSource.content.children.map((child) => (
-            <div key="p" {...dataSource.content}>
-              {child}
-            </div>
+            <p
+              className={dataSource.content.className}
+              dangerouslySetInnerHTML={{ __html: marked(child) }}
+            ></p>
           ))}
         </QueueAnim>
         {/* {!isMobile && img} */}

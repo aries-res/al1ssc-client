@@ -218,7 +218,7 @@ export const Content50DataSource = {
   titleWrapper: {
     className: "title-wrapper",
     children: [
-      { name: "title", children: "Highlights", className: "title-h1" },
+      { name: "title", children: "Important Resources", className: "title-h1" },
       {
         name: "content",
         className: "title-content",
@@ -326,13 +326,13 @@ export const Content30DataSource = {
     children: [
       {
         name: "title",
-        children: "WHY",
+        children: "Objectives",
         className: "title-h1",
       },
       {
         name: "content",
         className: "title-content",
-        children: "Aditya-L1 Science Support Cell has the following purposes",
+        children: "Aditya-L1 Science Support Cell has the following goals",
       },
     ],
   },
@@ -488,17 +488,17 @@ export const Feature20DataSource = {
       {
         path: "Fig3.jpg",
         caption:
-          "A comparison of in-situ magnetic field and solar wind speed measurement with a prediction model (shown in red) developed by `Pal et al. (2017)`. The in-situ measured parameters will be provided by Aditya-L1 instruments in the future.",
+          "A comparison of in-situ magnetic field and solar wind speed measurement with a prediction model (shown in red) developed by [Pal et al. (2017)](#). The in-situ measured parameters will be provided by Aditya-L1 instruments in the future.",
       },
     ],
   },
   textWrapper: { className: "content2-text", md: 12, xs: 24 },
-  title: { className: "content2-title", children: "WHAT" },
+  title: { className: "content2-title", children: "About" },
   content: {
     className: "content2-content",
     children: [
-      "Aditya-L1 mission is India's first dedicated spacecraft mission to study the Sun. The Aditya-L1 will be inserted in a halo orbit around the L1 (Lagrange 1) point, which is about 1.5 million km from Earth. It will enable a comprehensive understanding of the dynamical processes of the Sun and address some of the outstanding problems in solar physics and heliophysics. You can read more interesting details about the mission here.",
-      "As a joint effort of ISRO and ARIES, the Aditya-L1 Science Support Cell has been set up to act as a community service centre for the guest observers in preparing science observing proposals and analyzing science data. This support cell provides you tools and documentation required to understand, download and analyse the data. It will maintain the updates and will also provide an online help desk with professional researchers and PhD students on-board.",
+      "Aditya-L1 mission is India's first dedicated spacecraft mission to study the Sun. The Aditya-L1 will be inserted in a halo orbit around the L1 (Lagrange 1) point, which is about 1.5 million km from Earth. It will enable a comprehensive understanding of the dynamical processes of the Sun and address some of the outstanding problems in solar physics and heliophysics. You can read more interesting details about the mission [here](#).",
+      "As a joint effort of ISRO and ARIES, the Aditya-L1 Science Support Cell has been set up to act as a community service centre for the guest observers in preparing science observing proposals and analyzing science data. This support cell provides tools and documentation required to understand, download and analyse the data. It will be regularly updated and will also provide an online help desk with professional researchers and PhD students on-board.",
     ],
   },
 };
@@ -512,7 +512,7 @@ export const Feature70DataSource = {
       {
         name: "title",
         className: "feature7-title-h1",
-        children: "Recent Updates",
+        children: "News & Updates",
       },
       {
         name: "content",
@@ -825,7 +825,10 @@ export const Footer10DataSource = {
     className: "copyright",
     children: (
       <span>
-        ©2021 by <a href="https://aries.res.in">ARIES</a>
+        ©2021{" "}
+        <a href="https://aries.res.in">
+          ARIES (Aryabhatta Research Institute of observational sciencES)
+        </a>
       </span>
     ),
   },
