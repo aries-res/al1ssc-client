@@ -64,6 +64,20 @@ export const Nav00DataSource = {
               ],
             },
           },
+          {
+            name: "sub2",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Science Working Groups",
+                },
+              ],
+            },
+          },
         ],
       },
       {
@@ -73,6 +87,78 @@ export const Nav00DataSource = {
           href: "#",
           children: [{ children: "Data Products", name: "text" }],
         },
+        subItem: [
+          {
+            name: "sub0",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Level Descriptions",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub1",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Quick look browser",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub2",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Catalogs",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub3",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Analysis Tools",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub4",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Data from payloads",
+                },
+              ],
+            },
+          },
+        ],
       },
       {
         name: "item3",
@@ -81,6 +167,50 @@ export const Nav00DataSource = {
           href: "#",
           children: [{ children: "Planning", name: "text" }],
         },
+        subItem: [
+          {
+            name: "sub0",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Proposal Planner",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub1",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Data Volume Calculator",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub2",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Orbit tool",
+                },
+              ],
+            },
+          },
+        ],
       },
       {
         name: "item4",
@@ -89,6 +219,36 @@ export const Nav00DataSource = {
           href: "#",
           children: [{ children: "Media", name: "text" }],
         },
+        subItem: [
+          {
+            name: "sub0",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "News",
+                },
+              ],
+            },
+          },
+          {
+            name: "sub1",
+            className: "item-sub",
+            children: {
+              className: "item-sub-item",
+              children: [
+                {
+                  name: "title",
+                  className: "item-title",
+                  children: "Gallery",
+                },
+              ],
+            },
+          },
+        ],
       },
       {
         name: "item5",
