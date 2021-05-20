@@ -6,6 +6,7 @@
   height: calc(100vh - 64px);
   display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
   text-align: center;
   border-color: #666;
@@ -14,13 +15,27 @@
   background-attachment: fixed;
   background-position: center;
   & &-text-wrapper {
-    display: inline-block;
-    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: -5%;
     font-size: 14px; //1vw
     color: @template-text-color-light;
     width: 550px;
     > .queue-anim-leaving {
       position: relative !important;
+    }
+  }
+  & &-byline {
+    font-size: 1.2em;
+    img {
+      display: inline;
+      height: 90px;
+    }
+    img.aries {
+      height: 60px;
+      filter: brightness(1.5);
     }
   }
   & &-title {
@@ -35,11 +50,12 @@
   }
   & &-content {
     margin-top: 15px;
-    margin-bottom: 30px;
     word-wrap: break-word;
     min-height: 24px;
   }
   & &-button {
+    display: block;
+    margin-top: 30px;
     border: 1px solid #fff;
     color: #fff;
     background: transparent;
