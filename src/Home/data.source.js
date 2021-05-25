@@ -275,6 +275,11 @@ export const Banner01DataSource = {
       "A community service centre to help you prepare science observing proposals and analyze science data from Aditya-L1",
   },
   button: { className: "banner0-button", children: "Learn More" },
+  imgCaption: {
+    className: "banner0-caption",
+    children:
+      "This is a color composite image of **solar eclipse** taken on 21 August, 2017. It is a composite of 311 images calibrated with dark and flat-fields taken at Mitchell and Whiskey mountain. In the image the continuum is depicted in gray color, Fe XI (789.2 nm) is shown in red, Fe XIV (530.3 nm) in green and Fe XIII (1074.7 nm) in blue color. It should be noted that VELC of Aditya-L1 will observe the inner solar corona in all these wavelengths using imaging and spectroscopy. *(Image Credits: Miloslav Druckmüller, Peter Aniol, Shadia Habbal, Pavel Štarha, Judd Johnson, Jana Hoderová)* <script>console.log('hacked');</script>",
+  },
 };
 export const Content00DataSource = {
   wrapper: { className: "home-page-wrapper content0-wrapper" },
@@ -378,7 +383,7 @@ export const Content50DataSource = {
   titleWrapper: {
     className: "title-wrapper",
     children: [
-      { name: "title", children: "Important Resources", className: "title-h1" },
+      { name: "title", children: "Resources", className: "title-h1" },
       {
         name: "content",
         className: "title-content",
