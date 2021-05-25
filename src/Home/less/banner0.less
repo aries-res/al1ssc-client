@@ -14,6 +14,21 @@
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
+
+  .img-description {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    padding: 0;
+    white-space: normal;
+    color: #fff;
+    opacity: 0.7;
+  }
+
+  .img-description:hover {
+    opacity: 1;
+  }
+
   & &-text-wrapper {
     display: flex;
     flex-direction: column;
@@ -96,6 +111,15 @@
     & &-title {
       width: 90%;
       left: 0;
+    }
+  }
+}
+
+@media only screen and (max-width: @screen-xs) {
+  .@{banner0} {
+    .img-description {
+      bottom: 20px;
+      width: 80px;
     }
   }
 }
