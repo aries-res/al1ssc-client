@@ -102,9 +102,16 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 1279px) {
   .@{banner0} {
+    // Disable background-attachment: fixed for tablets and smaller devices
+    // since it gets degraded and in iOS devices, causes unintended behavior.
     background-attachment: initial;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .@{banner0} {
     & &-text-wrapper {
       width: 90%;
     }
