@@ -18,7 +18,7 @@
       font-size: 12px;
       margin-top: -20px;
     }
-    >h2 {
+    > h2 {
       margin-bottom: 24px;
       color: @template-text-color;
     }
@@ -29,6 +29,14 @@
       clear: both;
       &:hover {
         color: @primary-color;
+      }
+    }
+    .logos-grid {
+      display: grid;
+      grid-template-columns: repeat(2, min-content);
+      gap: 15px;
+      > a {
+        margin: 0;
       }
     }
   }
@@ -47,9 +55,26 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: @screen-sm-min) {
+  .footer1-wrapper .block .logos-grid {
+    grid-template-columns: repeat(3, min-content);
+  }
+}
+
+@media screen and (min-width: @screen-md-min) {
+  .footer1-wrapper .block .logos-grid {
+    grid-template-columns: repeat(6, min-content);
+  }
+}
+
+@media screen and (min-width: @screen-lg-min) {
+  .footer1-wrapper .block .logos-grid {
+    grid-template-columns: repeat(3, min-content);
+  }
+}
+
+@media screen and (max-width: @screen-md-max) {
   .footer1 {
-    min-height: 550px;
     &-wrapper {
       .footer1 {
         .home-page {
@@ -61,15 +86,21 @@
       margin: 0 auto 24px;
     }
     .block {
-      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
       margin-bottom: 32px;
       padding: 0;
+      > div > a {
+        text-align: center;
+        width: 100%;
+      }
     }
-    >ul {
+    > ul {
       width: 90%;
       margin: 20px auto 0;
       padding: 10px 0;
-      >li {
+      > li {
         width: 100%;
         h2 {
           margin-bottom: 10px;
@@ -89,7 +120,6 @@
           }
         }
       }
-
       span {
         width: 90%;
       }

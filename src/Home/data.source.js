@@ -923,7 +923,7 @@ export const Footer10DataSource = {
       {
         name: "block0",
         xs: 24,
-        md: 8,
+        lg: 7,
         className: "block",
         title: {
           className: "logo",
@@ -942,24 +942,48 @@ export const Footer10DataSource = {
       {
         name: "block1",
         xs: 24,
-        md: 8,
+        lg: 10,
         className: "block",
         title: { children: "Collaborating Institutes" },
         childWrapper: {
           children: [
-            { name: "link0", href: "#", children: "IUCAA" },
-            { name: "link1", href: "#", children: "PRL" },
-            { name: "link2", href: "#", children: "IISER Kolkata" },
-            { name: "link3", href: "#", children: "IISER Pune" },
-            { name: "link4", href: "#", children: "IIT BHU" },
-            { name: "link5", href: "#", children: "TIFR" },
+            {
+              name: "link0",
+              href: "https://www.iucaa.in/",
+              children: "images/iucaa_logo.png",
+            },
+            {
+              name: "link1",
+              href: "https://www.prl.res.in/",
+              children: "images/prl_logo.jpg",
+            },
+            {
+              name: "link2",
+              href: "https://www.iiserkol.ac.in/",
+              children: "images/iiser_kolkata_logo.jpg",
+            },
+            {
+              name: "link3",
+              href: "https://www.iiserpune.ac.in/",
+              children: "images/iiser_pune_logo.jpg",
+            },
+            {
+              name: "link4",
+              href: "https://www.iitbhu.ac.in/",
+              children: "images/iit_bhu_logo.jpg",
+            },
+            {
+              name: "link5",
+              href: "https://www.tifr.res.in/",
+              children: "images/tifr_logo.jpg",
+            },
           ],
         },
       },
       {
         name: "block2",
         xs: 24,
-        md: 8,
+        lg: 7,
         className: "block",
         title: { children: "Help" },
         childWrapper: {

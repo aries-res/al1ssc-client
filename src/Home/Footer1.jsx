@@ -12,21 +12,35 @@ class Footer extends React.Component {
   };
 
   getLiChildren = (data) =>
-    data.map((item, i) => {
+    data.map((item) => {
       const { title, childWrapper, ...itemProps } = item;
       return (
-        <Col key={i.toString()} {...itemProps} title={null} content={null}>
+        <Col {...itemProps} title={null} content={null}>
           <h2 {...title}>
-            {/* {typeof title.children === 'string' &&
-            title.children.match(isImg) */}
-            {title.children.endsWith(".svg") ? (
+            {typeof title.children === "string" &&
+            title.children.match(isImg) ? (
               <img src={title.children} width="100%" alt="img" />
             ) : (
               title.children
             )}
           </h2>
+
           <div {...childWrapper}>
-            {childWrapper.children.map(getChildrenToRender)}
+            {itemProps.name === "block1" ? (
+              <div className="logos-grid">
+                {childWrapper.children.map((child) => (
+                  <a
+                    href={child.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <img src={child.children} width="100px" alt="logo" />
+                  </a>
+                ))}
+              </div>
+            ) : (
+              childWrapper.children.map(getChildrenToRender)
+            )}
           </div>
         </Col>
       );
@@ -50,6 +64,7 @@ class Footer extends React.Component {
           >
             {childrenToRender}
           </QueueAnim>
+          {/* Copyright info */}
           <TweenOne
             animation={{ y: "+=30", opacity: 0, type: "from" }}
             key="copyright"
