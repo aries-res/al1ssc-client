@@ -43,14 +43,12 @@ class Banner extends React.PureComponent {
             &nbsp;&nbsp;&nbsp;
             <img src="aries_logo.png" alt="aries_logo" className="aries" />
           </div>
-          <div key="title" {...dataSource.title}>
-            {typeof dataSource.title.children === "string" &&
-            dataSource.title.children.match(isImg) ? (
-              <img src={dataSource.title.children} width="100%" alt="img" />
-            ) : (
-              dataSource.title.children
-            )}
-          </div>
+          <div
+            className={dataSource.title.className}
+            dangerouslySetInnerHTML={{
+              __html: marked(dataSource.title.children),
+            }}
+          ></div>
           {/* <div key="content" {...dataSource.content}>
             {dataSource.content.children}
           </div> */}

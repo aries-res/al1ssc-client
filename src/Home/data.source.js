@@ -267,7 +267,7 @@ export const Banner01DataSource = {
   textWrapper: { className: "banner0-text-wrapper" },
   title: {
     className: "banner0-title",
-    children: "Aditya-L1 Science Support Cell",
+    children: "Aditya-L1 Science<br>Support Cell",
   },
   content: {
     className: "banner0-content",

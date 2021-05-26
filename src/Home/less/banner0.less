@@ -34,7 +34,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin-top: -5%;
+    margin-top: -5%; // since bg image shift upwards due to attachment: fixed & size: cover
     color: @template-text-color-light;
     width: 550px;
     > .queue-anim-leaving {
@@ -42,7 +42,6 @@
     }
   }
   & &-byline {
-    font-size: 1.2em;
     img {
       display: inline;
       height: 90px;
@@ -53,14 +52,14 @@
     }
   }
   & &-title {
-    width: 380px;
-    min-height: 60px;
-    margin: auto;
-    display: inline-block;
+    margin: 0.8em auto 1em;
     font-family: "Asap", sans-serif;
     font-weight: 600;
-    font-size: 48px; //3em
-    position: relative;
+    line-height: 1.4;
+    font-size: ~"max(2em, 1.2em + 2vw)";
+    p {
+      margin: 0;
+    }
   }
   & &-content {
     margin-top: 15px;
@@ -69,7 +68,6 @@
   }
   & &-button {
     display: block;
-    margin-top: 30px;
     border: 1px solid #fff;
     color: #fff;
     background: transparent;
@@ -111,6 +109,9 @@
     // Disable background-attachment: fixed for tablets and smaller devices
     // since it gets degraded and in iOS devices, causes unintended behavior.
     background-attachment: initial;
+    & &-text-wrapper {
+      margin-top: 0; // reset to normal
+    }
   }
 }
 
@@ -118,10 +119,6 @@
   .@{banner0} {
     & &-text-wrapper {
       width: 90%;
-    }
-    & &-title {
-      width: 90%;
-      left: 0;
     }
   }
 }
