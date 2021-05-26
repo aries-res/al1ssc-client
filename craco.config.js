@@ -10,7 +10,8 @@ module.exports = {
             modifyVars: {
               "@primary-color": "#1890ff",
               "@font-family": "'Open Sans', Roboto, sans-serif",
-            }, //#1890ff
+              "@font-size-base": "16px",
+            },
             javascriptEnabled: true,
           },
         },
