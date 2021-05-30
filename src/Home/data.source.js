@@ -10,7 +10,7 @@ export const Banner01DataSource = {
   content: {
     className: "banner0-content",
     children:
-      "A community service centre to help you prepare science observing proposals and analyze science data from Aditya-L1",
+      "A community service centre to help in doing scientific research using Aditya-L1",
   },
   button: { className: "banner0-button", children: "Learn More" },
   imgCaption: {

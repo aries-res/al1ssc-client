@@ -10,7 +10,7 @@
   position: relative;
   text-align: center;
   border-color: #666;
-  background-image: url("../images/Fe_XI_FeXIII_Fe_XIV_Cont_Mitchell_ACHF.jpg");
+  background-image: url("../images/banner_sun_centered_blurred.jpg");
   background-size: cover;
   background-attachment: fixed;
   background-position: center;
@@ -36,7 +36,7 @@
     justify-content: center;
     margin-top: -5%; // since bg image shift upwards due to attachment: fixed & size: cover
     color: @template-text-color-light;
-    width: 550px;
+    // width: 550px;
     > .queue-anim-leaving {
       position: relative !important;
     }
@@ -52,19 +52,23 @@
     }
   }
   & &-title {
-    margin: 0.8em auto 1em;
+    text-shadow: 0 0 18px @primary-color;
     font-family: "Asap", sans-serif;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.2;
     font-size: ~"max(2em, 1.2em + 2vw)";
+    letter-spacing: 0.02em;
     p {
       margin: 0;
     }
   }
   & &-content {
-    margin-top: 15px;
+    margin: 1.5em auto 3em;
     word-wrap: break-word;
-    min-height: 24px;
+    max-width: 90%;
+    width: 400px;
+    letter-spacing: 0.015em;
+    opacity: 0.8 !important;
   }
   & &-button {
     display: block;
@@ -79,7 +83,7 @@
       color: #fff;
       border-color: #fff;
       background: rgba(255, 255, 255, 0.1);
-      box-shadow: 0 0 10px rgba(50, 250, 255, 0.75);
+      box-shadow: 0 0 10px @primary-color;
     }
     &:focus {
       color: #fff;

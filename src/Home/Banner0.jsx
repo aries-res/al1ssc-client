@@ -36,22 +36,22 @@ class Banner extends React.PureComponent {
           delay={200}
           {...dataSource.textWrapper}
         >
-          <div className="banner0-byline">
+          {/* <div className="banner0-byline">
             A joint effort of
             <br />
             <img src="isro_logo.png" alt="isro_logo" />
             &nbsp;&nbsp;&nbsp;
             <img src="aries_logo.png" alt="aries_logo" className="aries" />
-          </div>
+          </div> */}
           <div
             className={dataSource.title.className}
             dangerouslySetInnerHTML={{
               __html: marked(dataSource.title.children),
             }}
           ></div>
-          {/* <div key="content" {...dataSource.content}>
+          <div key="content" {...dataSource.content}>
             {dataSource.content.children}
-          </div> */}
+          </div>
           <Button ghost key="button" {...dataSource.button}>
             {dataSource.button.children}
           </Button>
