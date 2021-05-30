@@ -36,6 +36,7 @@ class Banner extends React.PureComponent {
           delay={200}
           {...dataSource.textWrapper}
         >
+          {/* TODO: Move logos to bottom left */}
           {/* <div className="banner0-byline">
             A joint effort of
             <br />
