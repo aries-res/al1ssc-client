@@ -11,37 +11,55 @@ class Footer extends React.Component {
     className: "footer1",
   };
 
+  getHyperlinkedLogo = (logo) => (
+    <a href={logo.href} target="_blank" rel="noopener noreferrer">
+      <img
+        src={logo.children}
+        width="100px"
+        alt={logo.children.split(/\.|\//).reverse()[1]}
+      />
+    </a>
+  );
+
   getLiChildren = (data) =>
-    data.map((item) => {
+    data.map((item, i) => {
       const { title, childWrapper, ...itemProps } = item;
+
+      const titleContent =
+        i === 0 ? (
+          <img
+            src={title.children}
+            width="100%"
+            alt="Aditya-L1 Science Support Cell logo"
+          />
+        ) : (
+          title.children
+        );
+
+      let childContent;
+      if (i === 0) {
+        childContent = (
+          <>
+            <p>{childWrapper.children[0].children}</p>
+            <div className="logos-grid">
+              {childWrapper.children.slice(1).map(this.getHyperlinkedLogo)}
+            </div>
+          </>
+        );
+      } else if (i === 1) {
+        childContent = (
+          <div className="logos-grid">
+            {childWrapper.children.map(this.getHyperlinkedLogo)}
+          </div>
+        );
+      } else {
+        childContent = childWrapper.children.map(getChildrenToRender);
+      }
+
       return (
         <Col {...itemProps} title={null} content={null}>
-          <h2 {...title}>
-            {typeof title.children === "string" &&
-            title.children.match(isImg) ? (
-              <img src={title.children} width="100%" alt="img" />
-            ) : (
-              title.children
-            )}
-          </h2>
-
-          <div {...childWrapper}>
-            {itemProps.name === "block1" ? (
-              <div className="logos-grid">
-                {childWrapper.children.map((child) => (
-                  <a
-                    href={child.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <img src={child.children} width="100px" alt="logo" />
-                  </a>
-                ))}
-              </div>
-            ) : (
-              childWrapper.children.map(getChildrenToRender)
-            )}
-          </div>
+          <h2 {...title}>{titleContent}</h2>
+          <div {...childWrapper}>{childContent}</div>
         </Col>
       );
     });

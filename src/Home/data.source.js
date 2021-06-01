@@ -924,7 +924,7 @@ export const Footer10DataSource = {
         name: "block0",
         xs: 24,
         lg: 7,
-        className: "block",
+        className: "block block0",
         title: {
           className: "logo",
           children: "AL1SSC_title.svg",
@@ -936,6 +936,16 @@ export const Footer10DataSource = {
               name: "content0",
               children: "A joint effort of ISRO & ARIES",
             },
+            {
+              name: "isro-link",
+              children: "images/isro_logo.jpg",
+              href: "https://www.isro.gov.in/",
+            },
+            {
+              name: "aries-link",
+              children: "images/aries_logo.jpg",
+              href: "https://www.aries.res.in/",
+            },
           ],
         },
       },
@@ -943,7 +953,7 @@ export const Footer10DataSource = {
         name: "block1",
         xs: 24,
         lg: 10,
-        className: "block",
+        className: "block block1",
         title: { children: "Collaborating Institutes" },
         childWrapper: {
           children: [
@@ -984,7 +994,7 @@ export const Footer10DataSource = {
         name: "block2",
         xs: 24,
         lg: 7,
-        className: "block",
+        className: "block block2",
         title: { children: "Help" },
         childWrapper: {
           children: [
