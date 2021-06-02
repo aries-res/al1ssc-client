@@ -1,9 +1,8 @@
 /* eslint no-undef: 0 */
 /* eslint arrow-parens: 0 */
-import React, { useState, useEffect } from "react";
-import { enquireScreen } from "enquire-js";
+import React from "react";
 
-import Nav0 from "./Nav0";
+// import Nav0 from "./Nav0";
 import Banner0 from "./Banner0";
 import Content0 from "./Content0";
 import Content5 from "./Content5";
@@ -13,7 +12,7 @@ import Feature7 from "./Feature7";
 import Footer1 from "./Footer1";
 
 import {
-  Nav00DataSource,
+  // Nav00DataSource,
   Banner01DataSource,
   Content00DataSource,
   Content50DataSource,
@@ -24,24 +23,8 @@ import {
 } from "./data.source";
 import "./less/antMotionStyle.less";
 
-export default function Home(props) {
-  // Initial value doesn't actually matter since it will be overridden by useEffect
-  const [isMobile, setIsMobile] = useState(false);
-
-  // Adapt to mobile phone screen;
-  useEffect(() => {
-    enquireScreen((b) => {
-      setIsMobile(!!b); //match: b is true, unmatch: b is undefined hence !!b = false
-    });
-  });
-
+export default function Home({ isMobile }) {
   const children = [
-    <Nav0
-      id="Nav0_0"
-      key="Nav0_0"
-      dataSource={Nav00DataSource}
-      isMobile={isMobile}
-    />,
     <Banner0
       id="Banner0_1"
       key="Banner0_1"
