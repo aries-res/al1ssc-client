@@ -28,6 +28,7 @@ class Header extends React.Component {
     const navChildren = navData.map((item) => {
       const { children: a, subItem, ...itemProps } = item;
       if (subItem) {
+        //has submenu items
         return (
           <SubMenu
             key={item.name}
@@ -70,6 +71,7 @@ class Header extends React.Component {
         </Item>
       );
     });
+
     const moment = phoneOpen === undefined ? 300 : null;
     return (
       <TweenOne
@@ -86,7 +88,9 @@ class Header extends React.Component {
             animation={{ x: -30, type: "from", ease: "easeOutQuad" }}
             {...dataSource.logo}
           >
-            <img width="100%" src={dataSource.logo.children} alt="img" />
+            <a href="/">
+              <img width="100%" src={dataSource.logo.children} alt="img" />
+            </a>
           </TweenOne>
           {isMobile && (
             <div

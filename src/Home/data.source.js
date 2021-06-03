@@ -30,6 +30,7 @@ export const Nav00DataSource = {
             className: "item-sub",
             children: {
               className: "item-sub-item",
+              href: "about",
               children: [
                 // {
                 //   name: "image0",
@@ -55,6 +56,7 @@ export const Nav00DataSource = {
             className: "item-sub",
             children: {
               className: "item-sub-item",
+              href: "instruments",
               children: [
                 {
                   name: "title",
