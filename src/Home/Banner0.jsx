@@ -29,6 +29,10 @@ class Banner extends React.PureComponent {
         >
           <Button type="link">What's in this image?</Button>
         </Popover>
+        <div className="institute-logos">
+          <img src="isro_logo.png" width="65px" alt="isro_logo" />
+          <img src="aries_logo.png" width="80px" alt="aries_logo" />
+        </div>
 
         <QueueAnim
           key="QueueAnim"
