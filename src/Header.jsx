@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
+import { HeaderDataSource } from "./data";
+import "./Header.less";
 
 const { SubMenu } = Menu;
 
-export default function Header({ dataSource, isMobile }) {
+export default function Header({ isMobile }) {
   const isCollapsedMenu = isMobile; // TODO: Make it a state that also depends on width occupied by menu
   const [isCollapsedMenuOpen, setIsCollapsedMenuOpen] = useState(undefined);
 
@@ -13,7 +15,7 @@ export default function Header({ dataSource, isMobile }) {
       <div className="header">
         <Link to="/" className="header-logo">
           <img
-            src={dataSource.logo}
+            src={HeaderDataSource.logo}
             alt="Aditya-L1 Science Support Cell Logo"
           />
         </Link>
@@ -39,18 +41,18 @@ export default function Header({ dataSource, isMobile }) {
             isCollapsedMenuOpen ? " collapsed-menu-open" : ""
           }`}
         >
-          {dataSource.menu.map((menuItem) =>
-            menuItem.submenu ? (
-              <SubMenu title={menuItem.title} key={escapeText(menuItem.title)}>
-                {menuItem.submenu.map((item) => (
-                  <Menu.Item key={escapeText(item.title)}>
-                    <Link to="/about">{item.title}</Link>
+          {HeaderDataSource.menu.map((menuItem) =>
+            menuItem.children ? (
+              <SubMenu title={menuItem.pageName} key={toKey(menuItem.path)}>
+                {menuItem.children.map((item) => (
+                  <Menu.Item key={toKey(item.path)}>
+                    <Link to={menuItem.path + item.path}>{item.pageName}</Link>
                   </Menu.Item>
                 ))}
               </SubMenu>
             ) : (
-              <Menu.Item key={escapeText(menuItem.title)}>
-                {menuItem.title}
+              <Menu.Item key={toKey(menuItem.path)}>
+                <Link to={menuItem.path}>{menuItem.pageName}</Link>
               </Menu.Item>
             )
           )}
@@ -60,4 +62,4 @@ export default function Header({ dataSource, isMobile }) {
   );
 }
 
-const escapeText = (text) => text.toLowerCase().replace(/[^\w]+/g, "-");
+const toKey = (path) => path.replace("/", "");
