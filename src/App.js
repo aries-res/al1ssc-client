@@ -5,9 +5,10 @@ import { Breadcrumb } from "antd";
 
 import "./App.less"; // TOFIX: Remove it & better way to import antd.less?
 import Home from "./Home";
-import Nav0 from "./Home/Nav0"; // TODO: move Nav0 out of Home/
-import { Nav00DataSource } from "./Home/data.source"; // TODO: Move Data of Nav0 out too
-import "./Home/less/antMotionStyle.less"; // TODO: Move out nav0.less, import it separately
+
+import Header from "./Header";
+import { HeaderDataSource } from "./header.data.source";
+import "./Header.less";
 
 function App() {
   // Initial value doesn't actually matter since it will be overridden by useEffect
@@ -22,13 +23,9 @@ function App() {
 
   return (
     <div className="AL1SSC">
-      <Nav0
-        id="Nav0_0"
-        key="Nav0_0"
-        dataSource={Nav00DataSource}
-        isMobile={isMobile}
-      />
       <Router>
+        <Header dataSource={HeaderDataSource} isMobile={isMobile} />
+
         <Switch>
           <Route path="/" exact>
             <Home isMobile={isMobile} />
