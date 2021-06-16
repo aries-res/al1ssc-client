@@ -31,15 +31,15 @@ function Content2(props) {
       key="img"
       animation={animType.one}
       resetStyle
-      {...dataSource.imgWrapper}
+      className="content2-img"
       component={Col}
       componentProps={{
-        md: dataSource.imgWrapper.md,
-        xs: dataSource.imgWrapper.xs,
+        md: 12,
+        xs: 24,
       }}
     >
       <Card bordered className="card">
-        <Carousel autoplay className={dataSource.img.className}>
+        <Carousel autoplay className="content2-img-inner">
           {dataSource.img.children.map((child) => (
             <div className="captioned-img">
               <img src={child.path} width="100%" alt="img" />
@@ -54,27 +54,27 @@ function Content2(props) {
     </TweenOne>
   );
   return (
-    <div {...tagProps} {...dataSource.wrapper}>
-      <OverPack {...dataSource.OverPack} component={Row}>
+    <div {...tagProps} className="home-page-wrapper content2-wrapper">
+      <OverPack className="home-page content2" playScale={0.3} component={Row}>
         {/* {isMobile && img} */}
         <QueueAnim
           type={animType.queue}
           key="text"
           leaveReverse
           ease={["easeOutCubic", "easeInCubic"]}
-          {...dataSource.textWrapper}
+          className="content2-text"
           component={Col}
           componentProps={{
-            md: dataSource.textWrapper.md,
-            xs: dataSource.textWrapper.xs,
+            md: 12,
+            xs: 24,
           }}
         >
-          <h2 key="h1" {...dataSource.title}>
+          <h2 key="h1" className="content2-title">
             {dataSource.title.children}
           </h2>
           {dataSource.content.children.map((child) => (
             <p
-              className={dataSource.content.className}
+              className="content2-content"
               dangerouslySetInnerHTML={{ __html: marked(child) }}
             ></p>
           ))}
