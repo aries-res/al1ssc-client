@@ -38,9 +38,10 @@ import "./less/antMotionStyle.less";
 const cmsBaseUrl = "http://localhost:1337";
 
 export default function Home({ isMobile }) {
-  const { isLoading, error, data } = useQuery("homepage", () =>
-    axios.get(cmsBaseUrl + "/homepage")
-  );
+  const { isLoading, error, data } = useQuery("homepage", async () => {
+    const { data } = await axios.get(cmsBaseUrl + "/homepage");
+    return data;
+  });
   if (isLoading) return <Spin size="large" />;
   if (error) {
     console.log(error);
@@ -62,7 +63,7 @@ export default function Home({ isMobile }) {
     <About
       id="about"
       key="home-about"
-      dataSource={data.data.about}
+      dataSource={data.about}
       isMobile={isMobile}
     />,
     <Content3
