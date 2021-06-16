@@ -4,6 +4,7 @@ import TweenOne from "rc-tween-one";
 import { Row, Col, Carousel, Card } from "antd";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
 import marked from "marked";
+const cmsBaseUrl = "http://localhost:1337";
 
 function Content2(props) {
   const { ...tagProps } = props;
@@ -40,9 +41,13 @@ function Content2(props) {
     >
       <Card bordered className="card">
         <Carousel autoplay className="content2-img-inner">
-          {dataSource.img.children.map((child) => (
+          {dataSource.carousel.map((child) => (
             <div className="captioned-img">
-              <img src={child.path} width="100%" alt="img" />
+              <img
+                src={cmsBaseUrl + child.image.formats.small.url}
+                width="100%"
+                alt="img"
+              />
               <p
                 className="caption"
                 dangerouslySetInnerHTML={{ __html: marked(child.caption) }}
@@ -70,14 +75,12 @@ function Content2(props) {
           }}
         >
           <h2 key="h1" className="content2-title">
-            {dataSource.title.children}
+            {dataSource.title}
           </h2>
-          {dataSource.content.children.map((child) => (
-            <p
-              className="content2-content"
-              dangerouslySetInnerHTML={{ __html: marked(child) }}
-            ></p>
-          ))}
+          <section
+            className="content2-content"
+            dangerouslySetInnerHTML={{ __html: marked(dataSource.description) }}
+          ></section>
         </QueueAnim>
         {/* {!isMobile && img} */}
         {img}

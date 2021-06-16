@@ -1,15 +1,27 @@
 /* eslint no-undef: 0 */
 /* eslint arrow-parens: 0 */
 import React from "react";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { Result, Spin } from "antd";
 
 // import Nav0 from "./Nav0";
 import Banner0 from "./Banner0";
 import Content0 from "./Content0";
 import Content5 from "./Content5";
 import Content3 from "./Content3";
-import Feature2 from "./Feature2";
+import About from "./Feature2";
 import Feature7 from "./Feature7";
 import Footer1 from "./Footer1";
+
+// async function getHomepageData(){
+//   axios.get('http://localhost:1337/homepage');
+//   try {
+
+//   } catch (error) {
+//     console.error()
+//   }
+// }
 
 import {
   // Nav00DataSource,
@@ -23,7 +35,17 @@ import {
 } from "./data.source";
 import "./less/antMotionStyle.less";
 
+const cmsBaseUrl = "http://localhost:1337";
+
 export default function Home({ isMobile }) {
+  const { isLoading, error, data } = useQuery("homepage", () =>
+    axios.get(cmsBaseUrl + "/homepage")
+  );
+  if (isLoading) return <Spin size="large" />;
+  if (error) {
+    console.log(error);
+    return <Result status="warning" title="Error in fetching data!" />;
+  }
   const children = [
     <Banner0
       id="Banner0_1"
@@ -37,10 +59,10 @@ export default function Home({ isMobile }) {
     //   dataSource={Content00DataSource}
     //   isMobile={isMobile}
     // />,
-    <Feature2
-      id="Feature2_0"
-      key="Feature2_0"
-      dataSource={Feature20DataSource}
+    <About
+      id="about"
+      key="home-about"
+      dataSource={data.data.about}
       isMobile={isMobile}
     />,
     <Content3
