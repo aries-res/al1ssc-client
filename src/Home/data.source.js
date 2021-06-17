@@ -697,31 +697,36 @@ export const Footer10DataSource = {
           children: [
             {
               name: "link0",
+              href: "https://www.iiap.res.in/",
+              children: "images/iia_logo.jpg",
+            },
+            {
+              name: "link1",
               href: "https://www.iucaa.in/",
               children: "images/iucaa_logo.png",
             },
             {
-              name: "link1",
+              name: "link2",
               href: "https://www.prl.res.in/",
               children: "images/prl_logo.jpg",
             },
             {
-              name: "link2",
+              name: "link3",
               href: "https://www.iiserkol.ac.in/",
               children: "images/iiser_kolkata_logo.jpg",
             },
             {
-              name: "link3",
+              name: "link4",
               href: "https://www.iiserpune.ac.in/",
               children: "images/iiser_pune_logo.jpg",
             },
             {
-              name: "link4",
+              name: "link5",
               href: "https://www.iitbhu.ac.in/",
               children: "images/iit_bhu_logo.jpg",
             },
             {
-              name: "link5",
+              name: "link6",
               href: "https://www.tifr.res.in/",
               children: "images/tifr_logo.jpg",
             },

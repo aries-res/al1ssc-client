@@ -15,7 +15,6 @@ class Footer extends React.Component {
     <a href={logo.href} target="_blank" rel="noopener noreferrer">
       <img
         src={logo.children}
-        width="100px"
         alt={logo.children.split(/\.|\//).reverse()[1]}
       />
     </a>
