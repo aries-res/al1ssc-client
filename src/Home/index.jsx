@@ -14,15 +14,6 @@ import About from "./Feature2";
 import Feature7 from "./Feature7";
 import Footer1 from "./Footer1";
 
-// async function getHomepageData(){
-//   axios.get('http://localhost:1337/homepage');
-//   try {
-
-//   } catch (error) {
-//     console.error()
-//   }
-// }
-
 import {
   // Nav00DataSource,
   Banner01DataSource,
@@ -35,11 +26,9 @@ import {
 } from "./data.source";
 import "./less/antMotionStyle.less";
 
-const cmsBaseUrl = "http://localhost:1337";
-
-export default function Home({ isMobile }) {
+export default function Home({ isMobile, resources }) {
   const { isLoading, error, data } = useQuery("homepage", async () => {
-    const { data } = await axios.get(cmsBaseUrl + "/homepage");
+    const { data } = await axios.get(resources.cmsBaseUrl + "/homepage");
     return data;
   });
   if (isLoading) return <Spin size="large" />;
@@ -65,6 +54,7 @@ export default function Home({ isMobile }) {
       key="home-about"
       dataSource={data.about}
       isMobile={isMobile}
+      resources={resources}
     />,
     <Content3
       id="Content3_0"

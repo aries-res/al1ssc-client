@@ -8,11 +8,12 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 
 const queryClient = new QueryClient();
+const cmsBaseUrl = "http://localhost:1339";
 
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <App />
+      <App resources={{ cmsBaseUrl }} />
       <ReactQueryDevtools initialIsOpen={false} position="bottom-right" />
     </QueryClientProvider>
   </React.StrictMode>,

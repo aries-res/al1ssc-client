@@ -13,7 +13,7 @@ import Page from "./Page";
 import Header from "./Header";
 import { pageRoutes, combinedRoutes } from "./data";
 
-function App() {
+function App({ resources }) {
   // Initial value doesn't actually matter since it will be overridden by useEffect
   const [isMobile, setIsMobile] = useState(false);
 
@@ -27,11 +27,11 @@ function App() {
   return (
     <div className="AL1SSC">
       <Router>
-        <Header isMobile={isMobile} />
+        <Header isMobile={isMobile} resources={resources} />
 
         <Switch>
           <Route path={pageRoutes[0].path} exact>
-            <Home isMobile={isMobile} />
+            <Home isMobile={isMobile} resources={resources} />
           </Route>
           {combinedRoutes.map((pageRoute) =>
             pageRoute.redirectsTo ? (
