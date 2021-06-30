@@ -6,6 +6,9 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
+import axios from "axios";
+import { useQuery } from "react-query";
+import { Result, Spin } from "antd";
 
 import "./App.less"; // TOFIX: Remove it & better way to import antd.less?
 import Home from "./Home";
@@ -24,28 +27,43 @@ function App({ resources }) {
     });
   });
 
+  // Get all the pages to create Routes in App's Switch - we need this data
+  // in the very beginning so that user can directly visit a particular page
+  // (e.g. /xyz) other than the homepage (i.e. /)
+  const pagesQuery = useQuery("generic-pages", async () => {
+    const { data } = await axios.get(resources.cmsBaseUrl + "/generic-pages");
+    return data;
+  });
+
+  if (pagesQuery.isLoading) return <Spin size="large" />;
+  if (pagesQuery.error) {
+    return <Result status="warning" title="Error in fetching data!" />;
+  }
+
+  const urlTitleMap = pagesQuery.data.reduce((map, { title, url }) => {
+    map[url] = title;
+    return map;
+  }, {});
+
   return (
     <div className="AL1SSC">
       <Router>
         <Header isMobile={isMobile} resources={resources} />
 
         <Switch>
-          <Route path={pageRoutes[0].path} exact>
+          <Route path="/" exact>
             <Home isMobile={isMobile} resources={resources} />
           </Route>
-          {combinedRoutes.map((pageRoute) =>
-            pageRoute.redirectsTo ? (
-              <Redirect
-                exact
-                from={pageRoute.path}
-                to={pageRoute.redirectsTo}
+
+          {pagesQuery.data.map((pageData) => (
+            <Route path={pageData.url}>
+              <Page
+                data={pageData}
+                urlTitleMap={urlTitleMap}
+                resources={resources}
               />
-            ) : (
-              <Route path={pageRoute.path}>
-                <Page path={pageRoute.path} />
-              </Route>
-            )
-          )}
+            </Route>
+          ))}
         </Switch>
       </Router>
     </div>
