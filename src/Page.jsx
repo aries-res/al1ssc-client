@@ -1,13 +1,17 @@
 import React from "react";
 import { Breadcrumb, Menu, Empty } from "antd";
 import { Link } from "react-router-dom";
+import parse, { attributesToProps } from "html-react-parser";
+
+import "./Page.less";
+import { props } from "bluebird";
 
 export default function Page({ data, urlTitleMap, resources }) {
   return (
     <div className="home-page-wrapper">
       <div className="home-page" style={{ paddingTop: "32px" }}>
         <PageBreadcrumbs data={data} urlTitleMap={urlTitleMap} />
-        <PageContent data={data.content} />
+        <PageContent data={data.content} resources={resources} />
       </div>
     </div>
   );
@@ -58,11 +62,24 @@ function PageBreadcrumbs({ data, urlTitleMap }) {
   );
 }
 
-function PageContent({ data }) {
+function PageContent({ data, resources }) {
   if (data.length > 0)
     return data.map((contentItem) => {
       if (contentItem.__component === "general.rich-text") {
-        return <div dangerouslySetInnerHTML={{ __html: contentItem.body }} />;
+        const options = {
+          replace: (domNode) => {
+            // TODO: Change figure atribs, make card, align caption, img responsivity & scale
+            if (domNode.attribs && domNode.name === "img") {
+              const props = attributesToProps(domNode.attribs);
+              props.src = resources.cmsBaseUrl + props.src;
+              props.width = "100%";
+              return <img {...props} />;
+            }
+          },
+        };
+        return (
+          <div className="rich-text">{parse(contentItem.body, options)}</div>
+        );
       } else if (contentItem.__component === "general.entire-collection") {
         return (
           <EntireCollection
