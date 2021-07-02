@@ -14,9 +14,9 @@ import "./App.less"; // TOFIX: Remove it & better way to import antd.less?
 import Home from "./Home";
 import Page from "./Page";
 import Header from "./Header";
-import { pageRoutes, combinedRoutes } from "./data";
+import { getData } from "./apiUtils";
 
-function App({ resources }) {
+function App() {
   // Initial value doesn't actually matter since it will be overridden by useEffect
   const [isMobile, setIsMobile] = useState(false);
 
@@ -30,10 +30,7 @@ function App({ resources }) {
   // Get all the pages to create Routes in App's Switch - we need this data
   // in the very beginning so that user can directly visit a particular page
   // (e.g. /xyz) other than the homepage (i.e. /)
-  const pagesQuery = useQuery("generic-pages", async () => {
-    const { data } = await axios.get(resources.cmsBaseUrl + "/generic-pages");
-    return data;
-  });
+  const pagesQuery = useQuery("generic-pages", getData("/generic-pages"));
 
   if (pagesQuery.isLoading) return <Spin size="large" />;
   if (pagesQuery.error) {
@@ -48,20 +45,16 @@ function App({ resources }) {
   return (
     <div className="AL1SSC">
       <Router>
-        <Header isMobile={isMobile} resources={resources} />
+        <Header isMobile={isMobile} />
 
         <Switch>
           <Route path="/" exact>
-            <Home isMobile={isMobile} resources={resources} />
+            <Home isMobile={isMobile} />
           </Route>
 
           {pagesQuery.data.map((pageData) => (
             <Route path={pageData.url}>
-              <Page
-                data={pageData}
-                urlTitleMap={urlTitleMap}
-                resources={resources}
-              />
+              <Page data={pageData} urlTitleMap={urlTitleMap} />
             </Route>
           ))}
         </Switch>

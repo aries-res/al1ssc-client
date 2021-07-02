@@ -25,12 +25,10 @@ import {
   Footer10DataSource,
 } from "./data.source";
 import "./less/antMotionStyle.less";
+import { getData } from "../apiUtils";
 
-export default function Home({ isMobile, resources }) {
-  const { isLoading, error, data } = useQuery("homepage", async () => {
-    const { data } = await axios.get(resources.cmsBaseUrl + "/homepage");
-    return data;
-  });
+export default function Home({ isMobile }) {
+  const { isLoading, error, data } = useQuery("homepage", getData("/homepage"));
   if (isLoading) return <Spin size="large" />;
   if (error) {
     console.log(error);
@@ -54,7 +52,6 @@ export default function Home({ isMobile, resources }) {
       key="home-about"
       dataSource={data.about}
       isMobile={isMobile}
-      resources={resources}
     />,
     <Content3
       id="Content3_0"

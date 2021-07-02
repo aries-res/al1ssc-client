@@ -6,21 +6,19 @@ import { useQuery } from "react-query";
 import { Result, Spin } from "antd";
 
 import "./Header.less";
+import { getData, cmsBaseUrl } from "./apiUtils";
 
 const { SubMenu } = Menu;
 
-export default function Header({ isMobile, resources }) {
+export default function Header({ isMobile }) {
   const isCollapsedMenu = isMobile; // TODO: Make it a state that also depends on width occupied by menu
   const [isCollapsedMenuOpen, setIsCollapsedMenuOpen] = useState(undefined);
 
-  const { isLoading, error, data } = useQuery("header", async () => {
-    const { data } = await axios.get(resources.cmsBaseUrl + "/header");
-    return data;
-  });
-  if (isLoading) return <Spin size="large" />;
+  const { isLoading, error, data } = useQuery("header", getData("/header"));
+  if (isLoading) return null;
   if (error) {
-    console.log(error);
-    return <Result status="warning" title="Error in fetching data!" />;
+    console.log(`Error ${error.response.status}: ${error.response.statusText}`);
+    return null;
   }
 
   return (
@@ -28,7 +26,7 @@ export default function Header({ isMobile, resources }) {
       <div className="header">
         <Link to="/" className="header-logo">
           <img
-            src={resources.cmsBaseUrl + data.logo.url}
+            src={cmsBaseUrl + data.logo.url}
             alt="Aditya-L1 Science Support Cell Logo"
           />
         </Link>

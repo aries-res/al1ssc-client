@@ -6,14 +6,14 @@ import { useQuery } from "react-query";
 import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
-import { getData, collectionAPIRoutes } from "./apiUtils";
+import { getData, cmsBaseUrl, collectionAPIRoutes } from "./apiUtils";
 
-export default function Page({ data, urlTitleMap, resources }) {
+export default function Page({ data, urlTitleMap }) {
   return (
     <div className="home-page-wrapper">
       <div className="home-page" style={{ paddingTop: "32px" }}>
         <PageBreadcrumbs data={data} urlTitleMap={urlTitleMap} />
-        <PageContent data={data.content} resources={resources} />
+        <PageContent data={data.content} />
       </div>
     </div>
   );
@@ -64,7 +64,7 @@ function PageBreadcrumbs({ data, urlTitleMap }) {
   );
 }
 
-function PageContent({ data, resources }) {
+function PageContent({ data }) {
   if (data.length > 0)
     return data.map((contentItem) => {
       if (contentItem.__component === "general.rich-text") {
@@ -73,7 +73,7 @@ function PageContent({ data, resources }) {
             // TODO: Change figure atribs, make card, align caption, img responsivity & scale
             if (domNode.attribs && domNode.name === "img") {
               const props = attributesToProps(domNode.attribs);
-              props.src = resources.cmsBaseUrl + props.src;
+              props.src = cmsBaseUrl + props.src;
               props.width = "100%";
               return <img {...props} />;
             }
