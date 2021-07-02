@@ -1,10 +1,12 @@
 import React from "react";
-import { Breadcrumb, Menu, Empty } from "antd";
+import { Breadcrumb, Menu, Empty, Spin, Result, List, Collapse } from "antd";
 import { Link } from "react-router-dom";
 import parse, { attributesToProps } from "html-react-parser";
+import { useQuery } from "react-query";
+import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
-import { props } from "bluebird";
+import { getData, collectionAPIRoutes } from "./apiUtils";
 
 export default function Page({ data, urlTitleMap, resources }) {
   return (
@@ -81,11 +83,7 @@ function PageContent({ data, resources }) {
           <div className="rich-text">{parse(contentItem.body, options)}</div>
         );
       } else if (contentItem.__component === "general.entire-collection") {
-        return (
-          <EntireCollection
-            apiRoute={contentItem.collectionType.replace("_", "-")}
-          />
-        );
+        return <EntireCollection collectionType={contentItem.collectionType} />;
       } else if (contentItem.__component === "general.app") {
         return <AnalysisApp slug={contentItem.app.slug} />;
       } else return null; // any other component added to CMS but client doesn't yet know how to render it
@@ -96,8 +94,59 @@ function PageContent({ data, resources }) {
     );
 }
 
-function EntireCollection({ apiRoute }) {
-  return null;
+function EntireCollection({ collectionType }) {
+  const newsPostsQuery = useQuery(
+    "news-posts",
+    getData(collectionAPIRoutes[collectionType]),
+    {
+      enabled: collectionType === "news_posts",
+    }
+  );
+  const faqsQuery = useQuery(
+    "faqs",
+    getData(collectionAPIRoutes[collectionType]),
+    {
+      enabled: collectionType === "faqs",
+    }
+  );
+
+  if (collectionType === "news_posts") {
+    if (newsPostsQuery.isLoading) return <Spin size="large" />;
+    if (newsPostsQuery.error) {
+      console.log(newsPostsQuery.error);
+      return <Result status="warning" title="Error in fetching data!" />;
+    }
+    return (
+      <List
+        itemLayout="horizontal"
+        dataSource={newsPostsQuery.data}
+        renderItem={(item) => (
+          <List.Item>
+            <List.Item.Meta
+              avatar={<CalendarOutlined />}
+              title={item.date}
+              description={parse(item.post)}
+            />
+          </List.Item>
+        )}
+      />
+    );
+  } else if (collectionType === "faqs") {
+    if (faqsQuery.isLoading) return <Spin size="large" />;
+    if (faqsQuery.error) {
+      console.log(faqsQuery.error);
+      return <Result status="warning" title="Error in fetching data!" />;
+    }
+    return (
+      <Collapse accordion>
+        {faqsQuery.data.map((faq) => (
+          <Collapse.Panel header={faq.question} key={faq.serialNumber}>
+            {parse(faq.answer)}
+          </Collapse.Panel>
+        ))}
+      </Collapse>
+    );
+  } else return null;
 }
 
 function AnalysisApp({ slug }) {
