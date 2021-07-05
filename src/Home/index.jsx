@@ -3,7 +3,6 @@
 import React from "react";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { Result, Spin } from "antd";
 
 // import Nav0 from "./Nav0";
 import Banner0 from "./Banner0";
@@ -13,6 +12,8 @@ import Content3 from "./Content3";
 import About from "./Feature2";
 import Feature7 from "./Feature7";
 import Footer1 from "./Footer1";
+import Loading from "../components/Loading";
+import Error from "../components/Error";
 
 import {
   // Nav00DataSource,
@@ -29,11 +30,8 @@ import { getData } from "../apiUtils";
 
 export default function Home({ isMobile }) {
   const { isLoading, error, data } = useQuery("homepage", getData("/homepage"));
-  if (isLoading) return <Spin size="large" />;
-  if (error) {
-    console.log(error);
-    return <Result status="warning" title="Error in fetching data!" />;
-  }
+  if (isLoading) return <Loading />;
+  if (error) return <Error response={error.response} />;
   const children = [
     <Banner0
       id="Banner0_1"

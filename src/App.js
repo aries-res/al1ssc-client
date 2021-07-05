@@ -6,15 +6,15 @@ import {
   Route,
   Redirect,
 } from "react-router-dom";
-import axios from "axios";
 import { useQuery } from "react-query";
-import { Result, Spin } from "antd";
 
 import "./App.less"; // TOFIX: Remove it & better way to import antd.less?
 import Home from "./Home";
 import Page from "./Page";
 import Header from "./Header";
 import { getData } from "./apiUtils";
+import Loading from "./components/Loading";
+import Error from "./components/Error";
 
 function App() {
   // Initial value doesn't actually matter since it will be overridden by useEffect
@@ -32,10 +32,8 @@ function App() {
   // (e.g. /xyz) other than the homepage (i.e. /)
   const pagesQuery = useQuery("generic-pages", getData("/generic-pages"));
 
-  if (pagesQuery.isLoading) return <Spin size="large" />;
-  if (pagesQuery.error) {
-    return <Result status="warning" title="Error in fetching data!" />;
-  }
+  if (pagesQuery.isLoading) return <Loading />;
+  if (pagesQuery.error) return <Error response={pagesQuery.error.response} />;
 
   const urlTitleMap = pagesQuery.data.reduce((map, { title, url }) => {
     map[url] = title;

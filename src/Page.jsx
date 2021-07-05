@@ -1,5 +1,5 @@
 import React from "react";
-import { Breadcrumb, Menu, Empty, Spin, Result, List, Collapse } from "antd";
+import { Breadcrumb, Menu, Empty, List, Collapse } from "antd";
 import { Link } from "react-router-dom";
 import parse, { attributesToProps } from "html-react-parser";
 import { useQuery } from "react-query";
@@ -7,6 +7,8 @@ import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
 import { getData, cmsBaseUrl, collectionAPIRoutes } from "./apiUtils";
+import Loading from "./components/Loading";
+import Error from "./components/Error";
 
 export default function Page({ data, urlTitleMap }) {
   return (
@@ -111,11 +113,9 @@ function EntireCollection({ collectionType }) {
   );
 
   if (collectionType === "news_posts") {
-    if (newsPostsQuery.isLoading) return <Spin size="large" />;
-    if (newsPostsQuery.error) {
-      console.log(newsPostsQuery.error);
-      return <Result status="warning" title="Error in fetching data!" />;
-    }
+    if (newsPostsQuery.isLoading) return <Loading />;
+    if (newsPostsQuery.error)
+      return <Error response={newsPostsQuery.error.response} />;
     return (
       <List
         itemLayout="horizontal"
@@ -132,11 +132,8 @@ function EntireCollection({ collectionType }) {
       />
     );
   } else if (collectionType === "faqs") {
-    if (faqsQuery.isLoading) return <Spin size="large" />;
-    if (faqsQuery.error) {
-      console.log(faqsQuery.error);
-      return <Result status="warning" title="Error in fetching data!" />;
-    }
+    if (faqsQuery.isLoading) return <Loading />;
+    if (faqsQuery.error) return <Error response={faqsQuery.error.response} />;
     return (
       <Collapse accordion>
         {faqsQuery.data.map((faq) => (

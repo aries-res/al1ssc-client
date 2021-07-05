@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import axios from "axios";
 import { useQuery } from "react-query";
-import { Result, Spin } from "antd";
 
 import "./Header.less";
 import { getData, cmsBaseUrl } from "./apiUtils";
@@ -17,7 +15,7 @@ export default function Header({ isMobile }) {
   const { isLoading, error, data } = useQuery("header", getData("/header"));
   if (isLoading) return null;
   if (error) {
-    console.log(`Error ${error.response.status}: ${error.response.statusText}`);
+    console.log(error);
     return null;
   }
 
