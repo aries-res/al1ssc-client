@@ -1,0 +1,6 @@
+# To make client-side routing work on the apache i.e. a static file server
+# If requested file doesn't exist, rewrite to index.html
+Options -MultiViews
+RewriteEngine On
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^ index.html [QSA,L]
