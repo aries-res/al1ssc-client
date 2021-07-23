@@ -61,7 +61,7 @@ export const pageRoutes = [
 ];
 
 export const HeaderDataSource = {
-  logo: "/AL1SSC_title.svg",
+  logo: "AL1SSC_title.svg",
   menu: pageRoutes.filter(
     (pageRoute) => pageRoute.accessedThrough === "header"
   ),

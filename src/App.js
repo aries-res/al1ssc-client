@@ -26,7 +26,7 @@ function App() {
 
   return (
     <div className="AL1SSC">
-      <Router>
+      <Router basename={process.env.PUBLIC_URL}>
         <Header isMobile={isMobile} />
 
         <Switch>
