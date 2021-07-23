@@ -3,7 +3,7 @@ import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
 import { Row, Col, Carousel, Card } from "antd";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
-import marked from "marked";
+import { cmsBaseUrl } from "../apiUtils";
 
 function Content2(props) {
   const { ...tagProps } = props;
@@ -31,21 +31,25 @@ function Content2(props) {
       key="img"
       animation={animType.one}
       resetStyle
-      {...dataSource.imgWrapper}
+      className="content2-img"
       component={Col}
       componentProps={{
-        md: dataSource.imgWrapper.md,
-        xs: dataSource.imgWrapper.xs,
+        md: 12,
+        xs: 24,
       }}
     >
       <Card bordered className="card">
-        <Carousel autoplay className={dataSource.img.className}>
-          {dataSource.img.children.map((child) => (
+        <Carousel autoplay className="content2-img-inner">
+          {dataSource.carousel.map((child) => (
             <div className="captioned-img">
-              <img src={child.path} width="100%" alt="img" />
+              <img
+                src={cmsBaseUrl + child.image.formats.small.url}
+                width="100%"
+                alt="img"
+              />
               <p
                 className="caption"
-                dangerouslySetInnerHTML={{ __html: marked(child.caption) }}
+                dangerouslySetInnerHTML={{ __html: child.caption }}
               ></p>
             </div>
           ))}
@@ -54,30 +58,28 @@ function Content2(props) {
     </TweenOne>
   );
   return (
-    <div {...tagProps} {...dataSource.wrapper}>
-      <OverPack {...dataSource.OverPack} component={Row}>
+    <div {...tagProps} className="home-page-wrapper content2-wrapper">
+      <OverPack className="home-page content2" playScale={0.3} component={Row}>
         {/* {isMobile && img} */}
         <QueueAnim
           type={animType.queue}
           key="text"
           leaveReverse
           ease={["easeOutCubic", "easeInCubic"]}
-          {...dataSource.textWrapper}
+          className="content2-text"
           component={Col}
           componentProps={{
-            md: dataSource.textWrapper.md,
-            xs: dataSource.textWrapper.xs,
+            md: 12,
+            xs: 24,
           }}
         >
-          <h2 key="h1" {...dataSource.title}>
-            {dataSource.title.children}
+          <h2 key="h1" className="content2-title">
+            {dataSource.title}
           </h2>
-          {dataSource.content.children.map((child) => (
-            <p
-              className={dataSource.content.className}
-              dangerouslySetInnerHTML={{ __html: marked(child) }}
-            ></p>
-          ))}
+          <section
+            className="content2-content"
+            dangerouslySetInnerHTML={{ __html: dataSource.description }}
+          ></section>
         </QueueAnim>
         {/* {!isMobile && img} */}
         {img}

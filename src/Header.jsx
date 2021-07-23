@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
-import { HeaderDataSource } from "./data";
+import { useQuery } from "react-query";
+
 import "./Header.less";
+import { getData, cmsBaseUrl } from "./apiUtils";
 
 const { SubMenu } = Menu;
 
@@ -10,12 +12,19 @@ export default function Header({ isMobile }) {
   const isCollapsedMenu = isMobile; // TODO: Make it a state that also depends on width occupied by menu
   const [isCollapsedMenuOpen, setIsCollapsedMenuOpen] = useState(undefined);
 
+  const { isLoading, error, data } = useQuery("header", getData("/header"));
+  if (isLoading) return null;
+  if (error) {
+    console.log(error);
+    return null;
+  }
+
   return (
     <header className="header-wrapper">
       <div className="header">
         <Link to="/" className="header-logo">
           <img
-            src={HeaderDataSource.logo}
+            src={cmsBaseUrl + data.logo.url}
             alt="Aditya-L1 Science Support Cell Logo"
           />
         </Link>
@@ -41,18 +50,18 @@ export default function Header({ isMobile }) {
             isCollapsedMenuOpen ? " collapsed-menu-open" : ""
           }`}
         >
-          {HeaderDataSource.menu.map((menuItem) =>
-            menuItem.children ? (
-              <SubMenu title={menuItem.pageName} key={toKey(menuItem.path)}>
-                {menuItem.children.map((item) => (
-                  <Menu.Item key={toKey(item.path)}>
-                    <Link to={menuItem.path + item.path}>{item.pageName}</Link>
+          {data.menu.map((menuItem) =>
+            menuItem.__component === "general.submenu" ? (
+              <SubMenu title={menuItem.title} key={menuItem.id}>
+                {menuItem.pages.map((item) => (
+                  <Menu.Item key={toKey(item.url)}>
+                    <Link to={item.url}>{item.title}</Link>
                   </Menu.Item>
                 ))}
               </SubMenu>
             ) : (
-              <Menu.Item key={toKey(menuItem.path)}>
-                <Link to={menuItem.path}>{menuItem.pageName}</Link>
+              <Menu.Item key={toKey(menuItem.page.url)}>
+                <Link to={menuItem.page.url}>{menuItem.page.title}</Link>
               </Menu.Item>
             )
           )}
