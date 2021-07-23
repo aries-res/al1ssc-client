@@ -1,10 +1,10 @@
 import axios from "axios";
 
-const cmsBaseUrl = "http://localhost:1339";
+const cmsBaseUrl = process.env.REACT_APP_CMS_API_URL;
 
 // Map of collection types' enum values to their API routes
 const collectionAPIRoutes = {
-  news_posts: "/news-posts",
+  news_posts: "/news-posts?_sort=date:DESC",
   faqs: "faqs?_sort=serialNumber:ASC",
 };
 
