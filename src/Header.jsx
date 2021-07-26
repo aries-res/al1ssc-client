@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useQuery } from "react-query";
 
 import "./Header.less";
-import { getData, cmsBaseUrl } from "./apiUtils";
+import { getData } from "./apiUtils";
 
 const { SubMenu } = Menu;
 
@@ -23,10 +23,7 @@ export default function Header({ isMobile }) {
     <header className="header-wrapper">
       <div className="header">
         <Link to="/" className="header-logo">
-          <img
-            src={cmsBaseUrl + data.logo.url}
-            alt="Aditya-L1 Science Support Cell Logo"
-          />
+          <img src={data.logo.url} alt="Aditya-L1 Science Support Cell Logo" />
         </Link>
         {isCollapsedMenu && (
           <div

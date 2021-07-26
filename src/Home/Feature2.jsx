@@ -3,7 +3,6 @@ import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
 import { Row, Col, Carousel, Card } from "antd";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
-import { cmsBaseUrl } from "../apiUtils";
 
 function Content2(props) {
   const { ...tagProps } = props;
@@ -42,11 +41,7 @@ function Content2(props) {
         <Carousel autoplay className="content2-img-inner">
           {dataSource.carousel.map((child) => (
             <div className="captioned-img">
-              <img
-                src={cmsBaseUrl + child.image.formats.small.url}
-                width="100%"
-                alt="img"
-              />
+              <img src={child.image.formats.small.url} width="100%" alt="img" />
               <p
                 className="caption"
                 dangerouslySetInnerHTML={{ __html: child.caption }}

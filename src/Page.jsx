@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
-import { getData, cmsBaseUrl, collectionAPIRoutes } from "./apiUtils";
+import { getData, collectionAPIRoutes } from "./apiUtils";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
 
@@ -75,7 +75,6 @@ function PageContent({ data }) {
             // TODO: Change figure atribs, make card, align caption, img responsivity & scale
             if (domNode.attribs && domNode.name === "img") {
               const props = attributesToProps(domNode.attribs);
-              props.src = cmsBaseUrl + props.src;
               props.width = "100%";
               return <img {...props} />;
             }
