@@ -741,8 +741,8 @@ export const Footer10DataSource = {
         title: { children: "Help" },
         childWrapper: {
           children: [
-            { href: "#", name: "link0", children: "FAQ" },
-            { href: "#", name: "link1", children: "Contact us" },
+            { href: "/faqs", name: "link0", children: "FAQ" },
+            { href: "/contact", name: "link1", children: "Contact us" },
           ],
         },
       },
