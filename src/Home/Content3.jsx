@@ -3,7 +3,6 @@ import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
 import { Row, Col } from "antd";
 import OverPack from "rc-scroll-anim/lib/ScrollOverPack";
-import { getChildrenToRender } from "./utils";
 
 class Content3 extends React.PureComponent {
   getDelay = (e, b) => (e % b) * 100 + Math.floor(e / b) * 100 + b * 100;
@@ -14,9 +13,12 @@ class Content3 extends React.PureComponent {
     delete props.dataSource;
     delete props.isMobile;
     let clearFloatNum = 0;
-    const children = dataSource.block.children.map((item, i) => {
-      const childObj = item.children;
-      const delay = isMobile ? i * 50 : this.getDelay(i, 24 / item.md);
+    const blockProps = {
+      md: 12,
+      xs: 24,
+    };
+    const children = dataSource.objectivesList.map((item, i) => {
+      const delay = isMobile ? i * 50 : this.getDelay(i, 24 / blockProps.md);
       const liAnim = {
         opacity: 0,
         type: "from",
@@ -24,19 +26,16 @@ class Content3 extends React.PureComponent {
         delay,
       };
       const childrenAnim = { ...liAnim, x: "+=10", delay: delay + 100 };
-      clearFloatNum += item.md;
+      clearFloatNum += blockProps.md;
       clearFloatNum = clearFloatNum > 24 ? 0 : clearFloatNum;
       return (
         <TweenOne
           component={Col}
           animation={liAnim}
-          key={item.name}
-          {...item}
-          componentProps={{ md: item.md, xs: item.xs }}
+          key={`block${i}`}
+          componentProps={{ md: blockProps.md, xs: blockProps.xs }}
           className={
-            !clearFloatNum
-              ? `${item.className || ""} clear-both`.trim()
-              : item.className
+            !clearFloatNum ? "content3-block clear-both" : "content3-block"
           }
         >
           <TweenOne
@@ -47,40 +46,43 @@ class Content3 extends React.PureComponent {
               ease: "easeOutQuad",
             }}
             key="img"
-            {...childObj.icon}
+            className="content3-icon"
           >
-            <img src={childObj.icon.children} width="100%" alt="img" />
+            <img src={item.icon.url} width="100%" alt="img" />
           </TweenOne>
-          <div {...childObj.textWrapper}>
+          <div className="content3-text">
             {/* <TweenOne
               key="h2"
               animation={childrenAnim}
               component="h2"
-              {...childObj.title}
+              className="content3-title"
             >
-              {childObj.title.children}
+              block title
             </TweenOne> */}
             <TweenOne
               key="p"
               animation={{ ...childrenAnim, delay: delay + 200 }}
               component="div"
-              {...childObj.content}
+              className="content3-content"
             >
-              {childObj.content.children}
+              <div dangerouslySetInnerHTML={{ __html: item.content }}></div>
             </TweenOne>
           </div>
         </TweenOne>
       );
     });
     return (
-      <div {...props} {...dataSource.wrapper}>
-        <div {...dataSource.page}>
-          <div {...dataSource.titleWrapper}>
-            {dataSource.titleWrapper.children.map(getChildrenToRender)}
+      <div {...props} className="home-page-wrapper content3-wrapper">
+        <div className="home-page content3">
+          <div className="title-wrapper">
+            <h1 key="title" className="content2-title">
+              {dataSource.title}
+            </h1>
+            <div className="title-content">{dataSource.description}</div>
           </div>
-          <OverPack {...dataSource.OverPack}>
+          <OverPack playScale={0.3}>
             <QueueAnim key="u" type="bottom">
-              <Row key="row" {...dataSource.block}>
+              <Row key="row" className="content3-block-wrapper">
                 {children}
               </Row>
             </QueueAnim>

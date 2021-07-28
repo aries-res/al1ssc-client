@@ -3,8 +3,6 @@ import { Button, Popover } from "antd";
 import { DownOutlined } from "@ant-design/icons";
 import QueueAnim from "rc-queue-anim";
 import TweenOne from "rc-tween-one";
-import { isImg } from "./utils";
-import marked from "marked";
 
 class Banner extends React.PureComponent {
   render() {
@@ -13,15 +11,19 @@ class Banner extends React.PureComponent {
     delete currentProps.dataSource;
     delete currentProps.isMobile;
     return (
-      <div {...currentProps} {...dataSource.wrapper}>
+      <div
+        {...currentProps}
+        className="banner0"
+        style={{ backgroundImage: `url(${dataSource.coverImage.url})` }}
+      >
         <Popover
           className="img-description"
           placement="topRight"
           content={
             <p
-              className={dataSource.imgCaption.className}
+              className="banner0-caption"
               dangerouslySetInnerHTML={{
-                __html: marked(dataSource.imgCaption.children),
+                __html: dataSource.imageCaption,
               }}
             ></p>
           }
@@ -38,9 +40,8 @@ class Banner extends React.PureComponent {
           key="QueueAnim"
           type={["bottom", "top"]}
           delay={200}
-          {...dataSource.textWrapper}
+          className="banner0-text-wrapper"
         >
-          {/* TODO: Move logos to bottom left */}
           {/* <div className="banner0-byline">
             A joint effort of
             <br />
@@ -49,16 +50,16 @@ class Banner extends React.PureComponent {
             <img src="aries_logo.png" alt="aries_logo" className="aries" />
           </div> */}
           <div
-            className={dataSource.title.className}
+            className="banner0-title"
             dangerouslySetInnerHTML={{
-              __html: marked(dataSource.title.children),
+              __html: "Aditya-L1 Science<br>Support Cell",
             }}
           ></div>
-          <div key="content" {...dataSource.content}>
-            {dataSource.content.children}
+          <div key="content" className="banner0-content">
+            {dataSource.subtitle}
           </div>
-          <Button ghost key="button" {...dataSource.button}>
-            {dataSource.button.children}
+          <Button ghost key="button" href="#about" className="banner0-button">
+            Learn More
           </Button>
         </QueueAnim>
         <TweenOne
