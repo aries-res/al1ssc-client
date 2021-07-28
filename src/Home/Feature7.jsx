@@ -55,7 +55,10 @@ function Feature7(props) {
           </QueueAnim>
         </OverPack>
         <div class="feature7-btn-wrapper">
-          <Button className="feature7-btn" href={dataSource.allPostsLink.url}>
+          <Button
+            className="feature7-btn"
+            href={process.env.PUBLIC_URL + dataSource.allPostsLink.url}
+          >
             View More
           </Button>
         </div>
