@@ -30,7 +30,10 @@ function App() {
   // Get all the pages to create Routes in App's Switch - we need this data
   // in the very beginning so that user can directly visit a particular page
   // (e.g. /xyz) other than the homepage (i.e. /)
-  const pagesQuery = useQuery("generic-pages", getData("/generic-pages"));
+  const pagesQuery = useQuery(
+    "generic-pages",
+    getData({ apiRoute: "/generic-pages" })
+  );
 
   if (pagesQuery.isLoading) return <Loading />;
   if (pagesQuery.error) return <Error response={pagesQuery.error.response} />;

@@ -6,7 +6,7 @@ import { useQuery } from "react-query";
 import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
-import { getData, collectionAPIRoutes } from "./apiUtils";
+import { getData, collectionsApiRequests } from "./apiUtils";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
 
@@ -98,14 +98,14 @@ function PageContent({ data }) {
 function EntireCollection({ collectionType }) {
   const newsPostsQuery = useQuery(
     "news-posts",
-    getData(collectionAPIRoutes[collectionType]),
+    getData(collectionsApiRequests[collectionType]),
     {
       enabled: collectionType === "news_posts",
     }
   );
   const faqsQuery = useQuery(
     "faqs",
-    getData(collectionAPIRoutes[collectionType]),
+    getData(collectionsApiRequests[collectionType]),
     {
       enabled: collectionType === "faqs",
     }

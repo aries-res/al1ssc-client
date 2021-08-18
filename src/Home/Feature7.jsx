@@ -4,17 +4,22 @@ import QueueAnim from "rc-queue-anim";
 import { Row, Col, Button } from "antd";
 import { useQuery } from "react-query";
 
-import { getData, collectionAPIRoutes } from "../apiUtils";
+import { getData, collectionsApiRequests } from "../apiUtils";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 
 function Feature7(props) {
   const { dataSource, isMobile, ...tagProps } = props;
+  const newsPostsRequest = collectionsApiRequests["news_posts"];
   const newsPostsQuery = useQuery(
     "homepage-news-posts",
-    getData(
-      collectionAPIRoutes["news_posts"] + `&_limit=${dataSource.numOfPosts}`
-    )
+    getData({
+      apiRoute: newsPostsRequest.apiRoute,
+      getParams: {
+        ...newsPostsRequest.getParams,
+        _limit: dataSource.numOfPosts, // show limited no. of posts on homepage
+      },
+    })
   );
   if (newsPostsQuery.isLoading) return <Loading />;
   if (newsPostsQuery.error)

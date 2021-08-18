@@ -12,7 +12,10 @@ export default function Header({ isMobile }) {
   const isCollapsedMenu = isMobile; // TODO: Make it a state that also depends on width occupied by menu
   const [isCollapsedMenuOpen, setIsCollapsedMenuOpen] = useState(undefined);
 
-  const { isLoading, error, data } = useQuery("header", getData("/header"));
+  const { isLoading, error, data } = useQuery(
+    "header",
+    getData({ apiRoute: "/header" })
+  );
   if (isLoading) return null;
   if (error) {
     console.log(error);

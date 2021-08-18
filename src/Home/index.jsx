@@ -16,9 +16,14 @@ import { Footer10DataSource } from "./data.source";
 import "./less/antMotionStyle.less";
 
 export default function Home({ isMobile }) {
-  const { isLoading, error, data } = useQuery("homepage", getData("/homepage"));
+  const { isLoading, error, data } = useQuery(
+    "homepage",
+    getData({ apiRoute: "/homepage" })
+  );
+
   if (isLoading) return <Loading />;
   if (error) return <Error response={error.response} />;
+
   const children = [
     <Banner
       id="banner"
