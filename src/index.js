@@ -9,6 +9,8 @@ import reportWebVitals from "./reportWebVitals";
 
 const queryClient = new QueryClient();
 
+// TODO: Add axios interceptor to handle network errors
+
 ReactDOM.render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>

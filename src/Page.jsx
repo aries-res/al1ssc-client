@@ -6,6 +6,7 @@ import { useQuery } from "react-query";
 import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
+import AnalysisTool from "./AnalysisTools";
 import { getData, collectionsApiRequests } from "./apiUtils";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
@@ -85,8 +86,8 @@ function PageContent({ data }) {
         );
       } else if (contentItem.__component === "general.entire-collection") {
         return <EntireCollection collectionType={contentItem.collectionType} />;
-      } else if (contentItem.__component === "general.app") {
-        return <AnalysisApp slug={contentItem.app.slug} />;
+      } else if (contentItem.__component === "general.analysis-tool") {
+        return <AnalysisTool toolName={contentItem.toolName} />;
       } else return null; // any other component added to CMS but client doesn't yet know how to render it
     });
   else
@@ -143,8 +144,4 @@ function EntireCollection({ collectionType }) {
       </Collapse>
     );
   } else return null;
-}
-
-function AnalysisApp({ slug }) {
-  return null;
 }
