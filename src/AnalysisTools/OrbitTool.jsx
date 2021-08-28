@@ -28,8 +28,12 @@ const trackLengths = [
 const timeSteps = ["12h", "24h", "48h", "7d", "10d", "15d", "30d", "60d"];
 
 export default function OrbitTool() {
-  // TODO: Add allBodies state
-  const [selectedBodies, setSelectedBodies] = useState([0, 1, 2]);
+  const [allBodies, setAllBodies] = useState([]);
+  const [selectedBodies, setSelectedBodies] = useState([
+    "PSP",
+    "SOLO",
+    "Earth",
+  ]);
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(
     moment().startOf("minute").valueOf() // current time with 0 s & 0 ms in UNIX timestamp
   );
@@ -39,7 +43,12 @@ export default function OrbitTool() {
   const bodiesQuery = useQuery(
     "orbit-tool-bodies",
     getData({ apiRoute: "/orbit-tool/bodies", isAnalysisTool: true }),
-    { refetchOnWindowFocus: false }
+    {
+      refetchOnWindowFocus: false,
+      onSuccess: (data) => {
+        setAllBodies(data);
+      },
+    }
   );
 
   if (bodiesQuery.isLoading) return <Loading />;
@@ -56,11 +65,11 @@ export default function OrbitTool() {
           style={{ width: 300 }}
           onChange={(value) => {
             setSelectedBodies(value);
-            console.log(value.map((i) => bodiesQuery.data[i].name));
+            console.log(value);
           }}
         >
-          {bodiesQuery.data.map((body, i) => (
-            <Select.Option value={i}>{body.name}</Select.Option>
+          {allBodies.map((body) => (
+            <Select.Option value={body.name}>{body.name}</Select.Option>
           ))}
         </Select>
         <br />
@@ -111,18 +120,16 @@ export default function OrbitTool() {
         </Select>
       </div>
       <OrbitPlot3D
-        bodies={selectedBodies.map((i) => bodiesQuery.data[i])}
-        timeStart={moment(selectedTimeEnd)
-          .subtract(...trackLengths[selectedTrackLength].duration)
-          .format("YYYY-MM-DDTHH:mm:ss")}
-        timeStop={moment(selectedTimeEnd).format("YYYY-MM-DDTHH:mm:ss")}
+        bodies={selectedBodies}
+        timeEnd={selectedTimeEnd}
+        trackLength={selectedTrackLength}
         timeStep={selectedTimeStep}
       />
     </>
   );
 }
 
-function OrbitPlot3D({ bodies, timeStart, timeStop, timeStep }) {
+function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep }) {
   const [plotLayout, setPlotLayout] = useState({
     width: 800,
     height: 600,
@@ -172,7 +179,7 @@ function OrbitPlot3D({ bodies, timeStart, timeStop, timeStep }) {
       const newPlotData = prevPlotData.filter(
         (trace) =>
           trace.name === "Sun" ||
-          bodies.findIndex((body) => body.name === trace.name) >= 0 // trace is for some body
+          bodies.findIndex((body) => body === trace.name) >= 0 // trace is for same body
       );
       console.log(newPlotData);
       return newPlotData;
@@ -181,15 +188,19 @@ function OrbitPlot3D({ bodies, timeStart, timeStop, timeStep }) {
 
   useQueries(
     bodies.map((body) => {
+      const timeStart = moment(timeEnd)
+        .subtract(...trackLengths[trackLength].duration)
+        .format("YYYY-MM-DDTHH:mm:ss");
+      const timeStop = moment(timeEnd).format("YYYY-MM-DDTHH:mm:ss");
       return {
-        queryKey: ["orbitData", body.name, timeStart, timeStop, timeStep],
+        queryKey: ["orbitData", body, timeStart, timeStop, timeStep],
         queryFn: getData({
-          apiRoute: "/orbit-tool",
+          apiRoute: "/orbit-tool/",
           getParams: {
             timeStart: timeStart,
             timeStop: timeStop,
             timeStep: timeStep,
-            body: body.body_id,
+            body: body,
           },
           isAnalysisTool: true,
         }),
