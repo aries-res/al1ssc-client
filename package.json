@@ -14,6 +14,7 @@
     "enquire-js": "^0.2.1",
     "html-react-parser": "^1.2.7",
     "marked": "^2.0.3",
+    "moment-timezone": "^0.5.33",
     "plotly.js-dist-min": "^2.3.1",
     "rc-queue-anim": "^1.8.5",
     "rc-scroll-anim": "^2.7.6",
@@ -24,9 +25,11 @@
     "react-query": "^3.17.1",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "source-map-explorer": "^2.5.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "craco start",
     "build": "craco build",
     "test": "craco test",
