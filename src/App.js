@@ -36,7 +36,7 @@ function App() {
   );
 
   if (pagesQuery.isLoading) return <Loading />;
-  if (pagesQuery.error) return <Error response={pagesQuery.error.response} />;
+  if (pagesQuery.error) return <Error err={pagesQuery.error} />;
 
   const urlTitleMap = pagesQuery.data.reduce((map, { title, url }) => {
     map[url] = title;

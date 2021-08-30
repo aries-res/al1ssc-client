@@ -52,7 +52,7 @@ export default function OrbitTool() {
   );
 
   if (bodiesQuery.isLoading) return <Loading />;
-  if (bodiesQuery.error) return <Error response={bodiesQuery.error.response} />;
+  if (bodiesQuery.error) return <Error err={bodiesQuery.error} />;
 
   return (
     <>

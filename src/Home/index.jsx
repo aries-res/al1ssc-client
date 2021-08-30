@@ -22,7 +22,7 @@ export default function Home({ isMobile }) {
   );
 
   if (isLoading) return <Loading />;
-  if (error) return <Error response={error.response} />;
+  if (error) return <Error err={error} />;
 
   const children = [
     <Banner

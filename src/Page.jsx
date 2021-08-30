@@ -114,8 +114,7 @@ function EntireCollection({ collectionType }) {
 
   if (collectionType === "news_posts") {
     if (newsPostsQuery.isLoading) return <Loading />;
-    if (newsPostsQuery.error)
-      return <Error response={newsPostsQuery.error.response} />;
+    if (newsPostsQuery.error) return <Error err={newsPostsQuery.error} />;
     return (
       <List
         itemLayout="horizontal"
@@ -133,7 +132,7 @@ function EntireCollection({ collectionType }) {
     );
   } else if (collectionType === "faqs") {
     if (faqsQuery.isLoading) return <Loading />;
-    if (faqsQuery.error) return <Error response={faqsQuery.error.response} />;
+    if (faqsQuery.error) return <Error err={faqsQuery.error} />;
     return (
       <Collapse accordion>
         {faqsQuery.data.map((faq) => (

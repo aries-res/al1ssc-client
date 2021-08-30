@@ -22,8 +22,7 @@ function Feature7(props) {
     })
   );
   if (newsPostsQuery.isLoading) return <Loading />;
-  if (newsPostsQuery.error)
-    return <Error response={newsPostsQuery.error.response} />;
+  if (newsPostsQuery.error) return <Error err={newsPostsQuery.error} />;
   return (
     <div {...tagProps} className="home-page-wrapper feature7-wrapper">
       <div className="home-page feature7">
