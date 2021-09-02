@@ -64,7 +64,7 @@ export default function OrbitTool() {
           mode="multiple"
           placeholder="Please select bodies to plot"
           defaultValue={selectedBodies}
-          style={{ width: 300 }}
+          style={{ width: 500 }}
           onChange={(value) => {
             setSelectedBodies(value);
             console.log(value);
