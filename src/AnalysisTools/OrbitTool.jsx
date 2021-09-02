@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery, useQueries } from "react-query";
 import createPlotlyComponent from "react-plotly.js/factory";
 import Plotly from "plotly.js-dist-min";
-import { Select, DatePicker } from "antd";
+import { Select, DatePicker, Progress } from "antd";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
 
@@ -29,11 +29,9 @@ const timeSteps = ["12h", "24h", "48h", "7d", "10d", "15d", "30d", "60d"];
 
 export default function OrbitTool() {
   const [allBodies, setAllBodies] = useState([]);
-  const [selectedBodies, setSelectedBodies] = useState([
-    "PSP",
-    "SOLO",
-    "Earth",
-  ]);
+  const [selectedBodies, setSelectedBodies] = useState([]);
+  const [deselectedBody, setDeselectedBody] = useState();
+
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(
     moment().startOf("minute").valueOf() // current time with 0 s & 0 ms in UNIX timestamp
   );
@@ -47,6 +45,10 @@ export default function OrbitTool() {
       refetchOnWindowFocus: false,
       onSuccess: (data) => {
         setAllBodies(data);
+        const defaultSelectedBodies = data
+          .filter((body) => body.plot_by_default)
+          .map((body) => body.name);
+        setSelectedBodies(defaultSelectedBodies);
       },
     }
   );
@@ -65,6 +67,10 @@ export default function OrbitTool() {
           style={{ width: 300 }}
           onChange={(value) => {
             setSelectedBodies(value);
+            console.log(value);
+          }}
+          onDeselect={(value) => {
+            setDeselectedBody(value);
             console.log(value);
           }}
         >
@@ -124,12 +130,14 @@ export default function OrbitTool() {
         timeEnd={selectedTimeEnd}
         trackLength={selectedTrackLength}
         timeStep={selectedTimeStep}
+        bodyToRemove={deselectedBody}
       />
     </>
   );
 }
 
-function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep }) {
+function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
+  const [numBodiesPlotted, setNumBodiesPlotted] = useState(0);
   const [plotLayout, setPlotLayout] = useState({
     width: 800,
     height: 600,
@@ -161,7 +169,6 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep }) {
     const newTrace = { ...data, type: "scatter3d", mode: "lines" };
     // TODO: Add scatter trace for data[-1] with no legend, hover
     setPlotData((prevPlotData) => {
-      // TODO: Maintain a hashmap of bodies-name and traceindex in plotData (-1 if not present)
       const traceIndex = prevPlotData.findIndex(
         (trace) => trace.name === newTrace.name
       );
@@ -172,19 +179,35 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep }) {
         return newPlotData;
       } else return prevPlotData.concat(newTrace);
     });
+
+    setNumBodiesPlotted((prevNumBodiesPlotted) => {
+      console.log(prevNumBodiesPlotted + 1);
+      return prevNumBodiesPlotted + 1;
+    });
   }
 
   useEffect(() => {
     setPlotData((prevPlotData) => {
       const newPlotData = prevPlotData.filter(
-        (trace) =>
-          trace.name === "Sun" ||
-          bodies.findIndex((body) => body === trace.name) >= 0 // trace is for same body
+        (trace) => trace.name !== bodyToRemove
       );
       console.log(newPlotData);
       return newPlotData;
     });
-  }, [bodies]);
+
+    if (bodyToRemove) {
+      // to prevent running it first tine
+      setNumBodiesPlotted((prevNumBodiesPlotted) => {
+        console.log(prevNumBodiesPlotted - 1);
+        return prevNumBodiesPlotted - 1;
+      });
+    }
+  }, [bodyToRemove]);
+
+  // TODO: Set bodiesplotted to 0 when any of non-body props changed
+  useEffect(() => {
+    setNumBodiesPlotted(0);
+  }, [timeEnd, trackLength, timeStep]);
 
   useQueries(
     bodies.map((body) => {
@@ -210,5 +233,32 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep }) {
     })
   );
 
-  return <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />;
+  let plotStatus;
+  if (bodies.length === 0) {
+    plotStatus = <p>No bodies selected to plot. Please select atleast one!</p>;
+  } else {
+    plotStatus = (
+      <div>
+        <Progress
+          percent={(numBodiesPlotted * 100) / bodies.length}
+          steps={bodies.length}
+          // size="small"
+          showInfo={false}
+        />
+        <span style={{ marginLeft: "10px" }}>
+          {numBodiesPlotted === bodies.length
+            ? "All the specified orbits have been plotted ✅"
+            : "Updating the plot with specified orbits ⏳"}
+        </span>
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <hr />
+      {plotStatus}
+      <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
+    </div>
+  );
 }
