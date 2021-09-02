@@ -165,19 +165,42 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
   ]);
 
   // add body's trace at index it is already present otherwise at end
-  function addBodyTrace(data) {
-    const newTrace = { ...data, type: "scatter3d", mode: "lines" };
-    // TODO: Add scatter trace for data[-1] with no legend, hover
+  function addBodyTrace({ x, y, z, hovertemplate, customdata, name, color }) {
+    const newLineTrace = {
+      x,
+      y,
+      z,
+      hovertemplate,
+      customdata,
+      name,
+      type: "scatter3d",
+      mode: "lines",
+      line: { color },
+    };
+    const trackEndIndex = x.length - 1;
+    const newMarkerTrace = {
+      x: [x[trackEndIndex]],
+      y: [y[trackEndIndex]],
+      z: [z[trackEndIndex]],
+      name,
+      type: "scatter3d",
+      mode: "markers",
+      marker: { size: 3, color },
+      showlegend: false,
+      hoverinfo: "none", // TODO: show hovertemplated customdata instead
+    };
+
     setPlotData((prevPlotData) => {
-      const traceIndex = prevPlotData.findIndex(
-        (trace) => trace.name === newTrace.name
+      const lineTraceIndex = prevPlotData.findIndex(
+        (trace) => trace.name === newLineTrace.name
       );
-      if (traceIndex >= 0) {
-        // if existing, replace the trace
+      if (lineTraceIndex >= 0) {
+        // if existing, replace the traces
         const newPlotData = [...prevPlotData];
-        newPlotData[traceIndex] = newTrace;
+        newPlotData[lineTraceIndex] = newLineTrace;
+        newPlotData[lineTraceIndex + 1] = newMarkerTrace;
         return newPlotData;
-      } else return prevPlotData.concat(newTrace);
+      } else return prevPlotData.concat(newLineTrace, newMarkerTrace);
     });
 
     setNumBodiesPlotted((prevNumBodiesPlotted) => {
@@ -190,7 +213,7 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
     setPlotData((prevPlotData) => {
       const newPlotData = prevPlotData.filter(
         (trace) => trace.name !== bodyToRemove
-      );
+      ); // remove line & marker trace with body to be removed as their name
       console.log(newPlotData);
       return newPlotData;
     });
@@ -204,8 +227,9 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
     }
   }, [bodyToRemove]);
 
-  // TODO: Set bodiesplotted to 0 when any of non-body props changed
   useEffect(() => {
+    // When time period related props change, all bodies data will be fetched again
+    // so reset num of bodies plotted to 0
     setNumBodiesPlotted(0);
   }, [timeEnd, trackLength, timeStep]);
 
