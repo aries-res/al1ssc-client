@@ -259,31 +259,35 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
     })
   );
 
-  let plotStatus;
-  if (bodies.length === 0) {
-    plotStatus = <p>No bodies selected to plot. Please select atleast one!</p>;
+  return (
+    <div>
+      <Plot3DStatus
+        numBodiesPlotted={numBodiesPlotted}
+        totalNumBodies={bodies.length}
+      />
+      <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
+    </div>
+  );
+}
+
+function Plot3DStatus({ numBodiesPlotted, totalNumBodies }) {
+  if (totalNumBodies === 0) {
+    return <p>No bodies selected to plot. Please select atleast one!</p>;
   } else {
-    plotStatus = (
+    return (
       <div>
         <Progress
-          percent={(numBodiesPlotted * 100) / bodies.length}
-          steps={bodies.length}
+          percent={(numBodiesPlotted * 100) / totalNumBodies}
+          steps={totalNumBodies}
           // size="small"
           showInfo={false}
         />
         <span style={{ marginLeft: "10px" }}>
-          {numBodiesPlotted === bodies.length
+          {numBodiesPlotted === totalNumBodies
             ? "All the specified orbits have been plotted ✅"
             : "Updating the plot with specified orbits ⏳"}
         </span>
       </div>
     );
   }
-
-  return (
-    <div>
-      {plotStatus}
-      <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
-    </div>
-  );
 }
