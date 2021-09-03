@@ -31,9 +31,7 @@ export default function OrbitTool() {
   const bodiesQuery = useQuery(
     "orbit-tool-bodies",
     getData({ apiRoute: "/orbit-tool/bodies", isAnalysisTool: true }),
-    {
-      refetchOnWindowFocus: false,
-    }
+    { refetchOnWindowFocus: false }
   );
 
   if (bodiesQuery.isLoading) return <Loading />;
@@ -214,16 +212,16 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
   }
 
   useEffect(() => {
-    setPlotData((prevPlotData) => {
-      const newPlotData = prevPlotData.filter(
-        (trace) => trace.name !== bodyToRemove
-      ); // remove line & marker trace with body to be removed as their name
-      console.log(newPlotData);
-      return newPlotData;
-    });
-
     if (bodyToRemove) {
-      // to prevent running it first tine
+      // to prevent running it first time (when component mounts)
+      setPlotData((prevPlotData) => {
+        const newPlotData = prevPlotData.filter(
+          (trace) => trace.name !== bodyToRemove
+        ); // remove line & marker trace with body to be removed as their name
+        console.log(newPlotData);
+        return newPlotData;
+      });
+
       setNumBodiesPlotted((prevNumBodiesPlotted) => {
         console.log(prevNumBodiesPlotted - 1);
         return prevNumBodiesPlotted - 1;
