@@ -166,7 +166,6 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
     },
   ]);
 
-  // add body's trace at index it is already present otherwise at end
   function addBodyTrace({ x, y, z, hovertemplate, customdata, name, color }) {
     const newLineTrace = {
       x,
@@ -212,12 +211,9 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
   }
 
   useEffect(() => {
-    if (bodyToRemove) {
-      // to prevent running it first time (when component mounts)
+    function removeBodyTrace(body) {
       setPlotData((prevPlotData) => {
-        const newPlotData = prevPlotData.filter(
-          (trace) => trace.name !== bodyToRemove
-        ); // remove line & marker trace with body to be removed as their name
+        const newPlotData = prevPlotData.filter((trace) => trace.name !== body); // remove line & marker trace with body to be removed as their name
         console.log(newPlotData);
         return newPlotData;
       });
@@ -227,6 +223,10 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
         return prevNumBodiesPlotted - 1;
       });
     }
+
+    // When bodyToRemove prop changes (except when component renders 1st time
+    // i.e. bodyToRemove=undefined), remove it from plot.
+    if (bodyToRemove) removeBodyTrace(bodyToRemove);
   }, [bodyToRemove]);
 
   useEffect(() => {
