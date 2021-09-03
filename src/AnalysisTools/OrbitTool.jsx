@@ -28,8 +28,28 @@ const trackLengths = [
 const timeSteps = ["12h", "24h", "48h", "7d", "10d", "15d", "30d", "60d"];
 
 export default function OrbitTool() {
-  const [allBodies, setAllBodies] = useState([]);
-  const [selectedBodies, setSelectedBodies] = useState([]);
+  const bodiesQuery = useQuery(
+    "orbit-tool-bodies",
+    getData({ apiRoute: "/orbit-tool/bodies", isAnalysisTool: true }),
+    {
+      refetchOnWindowFocus: false,
+    }
+  );
+
+  if (bodiesQuery.isLoading) return <Loading />;
+  if (bodiesQuery.error) return <Error err={bodiesQuery.error} />;
+
+  return (
+    // <OrbitTool2D />
+    <OrbitTool3D allBodies={bodiesQuery.data} />
+  );
+}
+
+function OrbitTool3D({ allBodies }) {
+  const defaultSelectedBodies = allBodies
+    .filter((body) => body.plot_by_default)
+    .map((body) => body.name);
+  const [selectedBodies, setSelectedBodies] = useState(defaultSelectedBodies);
   const [deselectedBody, setDeselectedBody] = useState();
 
   const [selectedTimeEnd, setSelectedTimeEnd] = useState(
@@ -38,24 +58,6 @@ export default function OrbitTool() {
   const [selectedTrackLength, setSelectedTrackLength] = useState(5);
   const [selectedTimeStep, setSelectedTimeStep] = useState("12h");
 
-  const bodiesQuery = useQuery(
-    "orbit-tool-bodies",
-    getData({ apiRoute: "/orbit-tool/bodies", isAnalysisTool: true }),
-    {
-      refetchOnWindowFocus: false,
-      onSuccess: (data) => {
-        setAllBodies(data);
-        const defaultSelectedBodies = data
-          .filter((body) => body.plot_by_default)
-          .map((body) => body.name);
-        setSelectedBodies(defaultSelectedBodies);
-      },
-    }
-  );
-
-  if (bodiesQuery.isLoading) return <Loading />;
-  if (bodiesQuery.error) return <Error err={bodiesQuery.error} />;
-
   return (
     <>
       <div>
@@ -63,7 +65,7 @@ export default function OrbitTool() {
         <Select
           mode="multiple"
           placeholder="Please select bodies to plot"
-          defaultValue={selectedBodies}
+          defaultValue={defaultSelectedBodies}
           style={{ width: 500 }}
           onChange={(value) => {
             setSelectedBodies(value);
@@ -125,6 +127,8 @@ export default function OrbitTool() {
           ))}
         </Select>
       </div>
+
+      <hr />
       <OrbitPlot3D
         bodies={selectedBodies}
         timeEnd={selectedTimeEnd}
@@ -280,7 +284,6 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
 
   return (
     <div>
-      <hr />
       {plotStatus}
       <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
     </div>
