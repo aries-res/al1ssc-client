@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useQuery, useQueries } from "react-query";
 import createPlotlyComponent from "react-plotly.js/factory";
 import Plotly from "plotly.js-dist-min";
-import { Select, DatePicker, Progress } from "antd";
+import { Select, DatePicker, Progress, Radio, Switch } from "antd";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
 
@@ -26,6 +26,29 @@ const trackLengths = [
   { value: "1y", duration: [1, "y"] },
 ];
 const timeSteps = ["12h", "24h", "48h", "7d", "10d", "15d", "30d", "60d"];
+
+const sceneAxisColors = {
+  white: {
+    backgroundcolor: "rgb(255,250,250)",
+    gridcolor: "rgb(204, 204, 204)",
+    zerolinecolor: "rgb(68, 68, 68)",
+    spikecolor: "rgb(68,68,68)",
+  },
+  black: {
+    backgroundcolor: "rgb(23,23,23)",
+    gridcolor: "rgb(182, 182, 182)",
+    zerolinecolor: "rgb(255, 255, 255)",
+    spikecolor: "rgb(230, 230, 230)",
+  },
+};
+
+const sceneAxisLayout = {
+  range: [-1.15, 1.15],
+  showgrid: true,
+  zeroline: true,
+  showbackground: true,
+  ...sceneAxisColors.white,
+};
 
 export default function OrbitTool() {
   const bodiesQuery = useQuery(
@@ -55,6 +78,9 @@ function OrbitTool3D({ allBodies }) {
   );
   const [selectedTrackLength, setSelectedTrackLength] = useState(5);
   const [selectedTimeStep, setSelectedTimeStep] = useState("12h");
+
+  const [selectedBgColor, setSelectedBgColor] = useState("white");
+  const [showGrid, setShowGrid] = useState(true);
 
   return (
     <>
@@ -124,6 +150,20 @@ function OrbitTool3D({ allBodies }) {
             <Select.Option value={timeStep}>{timeStep}</Select.Option>
           ))}
         </Select>
+        <br />
+
+        <span>Background color: </span>
+        <Radio.Group
+          defaultValue={selectedBgColor}
+          onChange={(e) => setSelectedBgColor(e.target.value)}
+        >
+          <Radio value="white">White</Radio>
+          <Radio value="black">Black</Radio>
+        </Radio.Group>
+        <br />
+
+        <span>Show grid: </span>
+        <Switch defaultChecked onChange={(checked) => setShowGrid(checked)} />
       </div>
 
       <hr />
@@ -133,24 +173,31 @@ function OrbitTool3D({ allBodies }) {
         trackLength={selectedTrackLength}
         timeStep={selectedTimeStep}
         bodyToRemove={deselectedBody}
+        bgColor={selectedBgColor}
+        showGrid={showGrid}
       />
     </>
   );
 }
 
-function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
+function OrbitPlot3D({
+  bodies,
+  timeEnd,
+  trackLength,
+  timeStep,
+  bodyToRemove,
+  bgColor,
+  showGrid,
+}) {
   const [numBodiesPlotted, setNumBodiesPlotted] = useState(0);
   const [plotLayout, setPlotLayout] = useState({
     width: 800,
     height: 600,
-    title: "3D Orbit Tool",
-    xaxis: { exponentformat: "e" },
-    yaxis: { exponentformat: "e" },
-    zaxis: { exponentformat: "e" },
+    title: "3D Orbit Plot",
     scene: {
-      xaxis: { range: [-1.15, 1.15] },
-      yaxis: { range: [-1.15, 1.15] },
-      zaxis: { range: [-1.15, 1.15] },
+      xaxis: sceneAxisLayout,
+      yaxis: sceneAxisLayout,
+      zaxis: sceneAxisLayout,
     },
   });
 
@@ -258,6 +305,42 @@ function OrbitPlot3D({ bodies, timeEnd, trackLength, timeStep, bodyToRemove }) {
       };
     })
   );
+
+  useEffect(() => {
+    // When bgColor prop changes, update layout to change colors of axes accordingly
+    setPlotLayout((prevPlotLayout) => ({
+      ...prevPlotLayout,
+      scene: {
+        xaxis: { ...prevPlotLayout.scene.xaxis, ...sceneAxisColors[bgColor] },
+        yaxis: { ...prevPlotLayout.scene.yaxis, ...sceneAxisColors[bgColor] },
+        zaxis: { ...prevPlotLayout.scene.zaxis, ...sceneAxisColors[bgColor] },
+      },
+    }));
+  }, [bgColor]);
+
+  useEffect(() => {
+    // When showGrid prop changes, update layout to show/hide grid & zero lines
+    setPlotLayout((prevPlotLayout) => ({
+      ...prevPlotLayout,
+      scene: {
+        xaxis: {
+          ...prevPlotLayout.scene.xaxis,
+          showgrid: showGrid,
+          zeroline: showGrid,
+        },
+        yaxis: {
+          ...prevPlotLayout.scene.yaxis,
+          showgrid: showGrid,
+          zeroline: showGrid,
+        },
+        zaxis: {
+          ...prevPlotLayout.scene.zaxis,
+          showgrid: showGrid,
+          zeroline: showGrid,
+        },
+      },
+    }));
+  }, [showGrid]);
 
   return (
     <div>
