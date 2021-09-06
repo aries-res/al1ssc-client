@@ -146,6 +146,7 @@ function OrbitTool3D({ allBodies }) {
             console.log(value);
           }}
         >
+          {/* TODO: Should be dependent on length of track or error validation */}
           {timeSteps.map((timeStep) => (
             <Select.Option value={timeStep}>{timeStep}</Select.Option>
           ))}
@@ -195,9 +196,9 @@ function OrbitPlot3D({
     height: 600,
     title: "3D Orbit Plot",
     scene: {
-      xaxis: sceneAxisLayout,
-      yaxis: sceneAxisLayout,
-      zaxis: sceneAxisLayout,
+      xaxis: { ...sceneAxisLayout, title: "x (AU)" },
+      yaxis: { ...sceneAxisLayout, title: "y (AU)" },
+      zaxis: { ...sceneAxisLayout, title: "z (AU)" },
     },
   });
 
@@ -230,12 +231,13 @@ function OrbitPlot3D({
       x: [x[trackEndIndex]],
       y: [y[trackEndIndex]],
       z: [z[trackEndIndex]],
+      hovertemplate,
+      customdata: [customdata[trackEndIndex]],
       name,
       type: "scatter3d",
       mode: "markers",
       marker: { size: 3, color },
       showlegend: false,
-      hoverinfo: "none", // TODO: show hovertemplated customdata instead
     };
 
     setPlotData((prevPlotData) => {
