@@ -293,7 +293,7 @@ function OrbitPlot3D({
       return {
         queryKey: ["orbitData", body, timeStart, timeStop, timeStep],
         queryFn: getData({
-          apiRoute: "/orbit-tool/",
+          apiRoute: "/orbit-tool/3D",
           getParams: {
             timeStart: timeStart,
             timeStop: timeStop,
@@ -303,6 +303,7 @@ function OrbitPlot3D({
           isAnalysisTool: true,
         }),
         onSuccess: (bodyOrbitData) => addBodyTrace(bodyOrbitData),
+        // TODO: onError: Handle when query fails
         refetchOnWindowFocus: false,
       };
     })
