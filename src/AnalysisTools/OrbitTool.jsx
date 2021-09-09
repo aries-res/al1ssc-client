@@ -57,25 +57,92 @@ export default function OrbitTool() {
     { refetchOnWindowFocus: false }
   );
 
-  if (bodiesQuery.isLoading) return <Loading />;
+  if (bodiesQuery.isLoading) return <Loading />; // TODO: show a UI skeleton instead?
   if (bodiesQuery.error) return <Error err={bodiesQuery.error} />;
 
-  return (
-    // <OrbitTool2D />
-    <OrbitTool3D allBodies={bodiesQuery.data} />
-  );
+  return <OrbitToolUI allBodies={bodiesQuery.data} />;
 }
 
-function OrbitTool3D({ allBodies }) {
+function OrbitToolUI({ allBodies }) {
   const defaultSelectedBodies = allBodies
     .filter((body) => body.plot_by_default)
     .map((body) => body.name);
   const [selectedBodies, setSelectedBodies] = useState(defaultSelectedBodies);
   const [deselectedBody, setDeselectedBody] = useState();
 
-  const [selectedTimeEnd, setSelectedTimeEnd] = useState(
+  const [selectedTime, setSelectedTime] = useState(
     moment().startOf("minute").valueOf() // current time with 0 s & 0 ms in UNIX timestamp
+  ); // TODO: make it round off to nearest quarter hour
+
+  const [selectedView, setSelectedView] = useState("3d");
+
+  console.log("render");
+  return (
+    <div>
+      <span>Bodies: </span>
+      <Select
+        mode="multiple"
+        placeholder="Please select bodies to plot"
+        defaultValue={defaultSelectedBodies}
+        style={{ width: 500 }}
+        onChange={(value) => {
+          setSelectedBodies(value);
+          console.log(value);
+        }}
+        onDeselect={(value) => {
+          setDeselectedBody(value);
+          console.log(value);
+        }}
+      >
+        {allBodies.map((body) => (
+          <Select.Option value={body.name}>{body.name}</Select.Option>
+        ))}
+      </Select>
+      <br />
+
+      <span>Time (in UTC): </span>
+      <DatePicker
+        defaultValue={moment(selectedTime)}
+        allowClear={false}
+        showTime={{
+          format: "HH:mm",
+          minuteStep: 15,
+          defaultValue: moment("00:00:00", "HH:mm:ss"),
+        }}
+        onOk={(datetime) => {
+          setSelectedTime(datetime.valueOf());
+          console.log(datetime);
+        }}
+      />
+      <br />
+
+      <span>Orbit Plot View: </span>
+      <Radio.Group
+        onChange={(e) => {
+          console.log(e.target.value);
+          setSelectedView(e.target.value);
+        }}
+        defaultValue="3d"
+      >
+        <Radio.Button value="2d">2D Plot</Radio.Button>
+        <Radio.Button value="3d">3D Plot</Radio.Button>
+      </Radio.Group>
+      <br />
+      <br />
+      <Plot2DView
+        style={{ display: selectedView === "2d" ? "block" : "none" }}
+      />
+      <Plot3DView
+        selectedBodies={selectedBodies}
+        deselectedBody={deselectedBody}
+        selectedTime={selectedTime}
+        style={{ display: selectedView === "3d" ? "block" : "none" }}
+      />
+    </div>
   );
+}
+
+function Plot3DView({ selectedBodies, deselectedBody, selectedTime, style }) {
   const [selectedTrackLength, setSelectedTrackLength] = useState(5);
   const [selectedTimeStep, setSelectedTimeStep] = useState("12h");
 
@@ -83,45 +150,8 @@ function OrbitTool3D({ allBodies }) {
   const [showGrid, setShowGrid] = useState(true);
 
   return (
-    <>
+    <div style={style}>
       <div>
-        <span>Bodies: </span>
-        <Select
-          mode="multiple"
-          placeholder="Please select bodies to plot"
-          defaultValue={defaultSelectedBodies}
-          style={{ width: 500 }}
-          onChange={(value) => {
-            setSelectedBodies(value);
-            console.log(value);
-          }}
-          onDeselect={(value) => {
-            setDeselectedBody(value);
-            console.log(value);
-          }}
-        >
-          {allBodies.map((body) => (
-            <Select.Option value={body.name}>{body.name}</Select.Option>
-          ))}
-        </Select>
-        <br />
-
-        <span>End Time (in UTC): </span>
-        <DatePicker
-          defaultValue={moment(selectedTimeEnd)}
-          allowClear={false}
-          showTime={{
-            format: "HH:mm",
-            minuteStep: 15,
-            defaultValue: moment("00:00:00", "HH:mm:ss"),
-          }}
-          onOk={(date) => {
-            setSelectedTimeEnd(date.valueOf());
-            console.log(date);
-          }}
-        />
-        <br />
-
         <span>Length of track: </span>
         <Select
           defaultValue={selectedTrackLength}
@@ -168,25 +198,25 @@ function OrbitTool3D({ allBodies }) {
       </div>
 
       <hr />
-      <OrbitPlot3D
+      <Plot3DOutput
         bodies={selectedBodies}
-        timeEnd={selectedTimeEnd}
+        bodyToRemove={deselectedBody}
+        timeEnd={selectedTime}
         trackLength={selectedTrackLength}
         timeStep={selectedTimeStep}
-        bodyToRemove={deselectedBody}
         bgColor={selectedBgColor}
         showGrid={showGrid}
       />
-    </>
+    </div>
   );
 }
 
-function OrbitPlot3D({
+function Plot3DOutput({
   bodies,
+  bodyToRemove,
   timeEnd,
   trackLength,
   timeStep,
-  bodyToRemove,
   bgColor,
   showGrid,
 }) {
@@ -376,4 +406,35 @@ function Plot3DStatus({ numBodiesPlotted, totalNumBodies }) {
       </div>
     );
   }
+}
+
+function Plot2DView({ style }) {
+  const orbit2DQuery = useQuery(
+    "orbitTool2D",
+    getData({
+      apiRoute: "/orbit-tool/2D",
+      getParams: {
+        time: "2020-05-12T13:30:00",
+        bodies: ["PSP", "Earth", "Solar Orbiter", "Venus"],
+        vsw: [400, 400, 900, 400],
+        spirals: true,
+        sbLine: true,
+        coordE: false,
+        refLong: 90,
+        refLat: 20,
+        refVsw: 400,
+      },
+      isAnalysisTool: true,
+    }),
+    { refetchOnWindowFocus: false }
+  );
+
+  if (orbit2DQuery.isLoading) return <Loading />;
+
+  return (
+    <div style={style}>
+      <p>Input controls to be added</p>
+      <img src={orbit2DQuery.data.plot} alt="2D plot" width="800px" />
+    </div>
+  );
 }
