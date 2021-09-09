@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useQuery, useQueries } from "react-query";
 import createPlotlyComponent from "react-plotly.js/factory";
 import Plotly from "plotly.js-dist-min";
-import { Select, DatePicker, Progress, Radio, Switch } from "antd";
+import {
+  Select,
+  DatePicker,
+  Progress,
+  Radio,
+  Switch,
+  InputNumber,
+  Slider,
+  Collapse,
+} from "antd";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
 
@@ -74,7 +83,7 @@ function OrbitToolUI({ allBodies }) {
     moment().startOf("minute").valueOf() // current time with 0 s & 0 ms in UNIX timestamp
   ); // TODO: make it round off to nearest quarter hour
 
-  const [selectedView, setSelectedView] = useState("3d");
+  const [selectedView, setSelectedView] = useState("2d");
 
   console.log("render");
   return (
@@ -100,7 +109,7 @@ function OrbitToolUI({ allBodies }) {
       </Select>
       <br />
 
-      <span>Time (in UTC): </span>
+      <span>Time [in UTC]: </span>
       <DatePicker
         defaultValue={moment(selectedTime)}
         allowClear={false}
@@ -130,6 +139,7 @@ function OrbitToolUI({ allBodies }) {
       <br />
       <br />
       <Plot2DView
+        selectedBodies={selectedBodies}
         style={{ display: selectedView === "2d" ? "block" : "none" }}
       />
       <Plot3DView
@@ -408,7 +418,72 @@ function Plot3DStatus({ numBodiesPlotted, totalNumBodies }) {
   }
 }
 
-function Plot2DView({ style }) {
+function Plot2DView({ style, selectedBodies }) {
+  return (
+    <div style={style}>
+      <span>
+        Solar wind speed (v<sub>sw</sub>) [in km/s]:
+      </span>
+      {selectedBodies.map((body) => (
+        <div key={body}>
+          <span>{`${body}: `}</span>
+          <InputNumber type="number" defaultValue={400} min={1} />
+        </div>
+      ))}
+      <br />
+
+      <span>Show Parker spirals: </span>
+      <Switch defaultChecked onChange={(f) => f} />
+      <br />
+
+      <span>Show straight line from Sun to Body: </span>
+      <Switch defaultChecked onChange={(f) => f} />
+      <br />
+
+      <span>Show Earth-aligned coordinate system: </span>
+      <Switch onChange={(f) => f} />
+      <br />
+
+      <span>Show a reference (e.g. flare): </span>
+      <Switch defaultChecked onChange={(f) => f} />
+      <br />
+
+      <RefCoordInput />
+
+      <hr />
+      <Plot2DOutput />
+    </div>
+  );
+}
+
+function RefCoordInput() {
+  return (
+    <Collapse bordered={false}>
+      <Collapse.Panel header="Specify reference coordinates">
+        <span>Carrington Longitude: </span>
+        <Slider
+          min={0}
+          max={360}
+          marks={{ 0: "0°", 90: "90°", 180: "180°", 270: "270°", 360: "360°" }}
+          defaultValue={20}
+        />
+        <br />
+        <span>Carrington Latitude: </span>
+        <Slider
+          min={-90}
+          max={90}
+          marks={{ "-90": "-90°", 0: "0°", 90: "90°" }}
+          defaultValue={0}
+        />
+        <span>Solar Wind Speed: </span>
+        <br />
+        <InputNumber type="number" defaultValue={400} min={1} />
+      </Collapse.Panel>
+    </Collapse>
+  );
+}
+
+function Plot2DOutput() {
   const orbit2DQuery = useQuery(
     "orbitTool2D",
     getData({
@@ -431,10 +506,5 @@ function Plot2DView({ style }) {
 
   if (orbit2DQuery.isLoading) return <Loading />;
 
-  return (
-    <div style={style}>
-      <p>Input controls to be added</p>
-      <img src={orbit2DQuery.data.plot} alt="2D plot" width="800px" />
-    </div>
-  );
+  return <img src={orbit2DQuery.data.plot} alt="plot" width="800px" />;
 }
