@@ -131,7 +131,7 @@ function OrbitToolUI({ allBodies }) {
           console.log(e.target.value);
           setSelectedView(e.target.value);
         }}
-        defaultValue="3d"
+        defaultValue="2d"
       >
         <Radio.Button value="2d">2D Plot</Radio.Button>
         <Radio.Button value="3d">3D Plot</Radio.Button>
@@ -140,6 +140,7 @@ function OrbitToolUI({ allBodies }) {
       <br />
       <Plot2DView
         selectedBodies={selectedBodies}
+        selectedTime={selectedTime}
         style={{ display: selectedView === "2d" ? "block" : "none" }}
       />
       <Plot3DView
@@ -330,16 +331,12 @@ function Plot3DOutput({
         .subtract(...trackLengths[trackLength].duration)
         .format("YYYY-MM-DDTHH:mm:ss");
       const timeStop = moment(timeEnd).format("YYYY-MM-DDTHH:mm:ss");
+      const params = { body, timeStart, timeStop, timeStep };
       return {
-        queryKey: ["orbitData", body, timeStart, timeStop, timeStep],
+        queryKey: ["plot3D", params],
         queryFn: getData({
           apiRoute: "/orbit-tool/3D",
-          getParams: {
-            timeStart: timeStart,
-            timeStop: timeStop,
-            timeStep: timeStep,
-            body: body,
-          },
+          getParams: params,
           isAnalysisTool: true,
         }),
         onSuccess: (bodyOrbitData) => addBodyTrace(bodyOrbitData),
@@ -418,7 +415,48 @@ function Plot3DStatus({ numBodiesPlotted, totalNumBodies }) {
   }
 }
 
-function Plot2DView({ style, selectedBodies }) {
+function Plot2DView({ selectedBodies, selectedTime, style }) {
+  const [bodiesVsw, setBodiesVsw] = useState({});
+  const [showSpirals, setShowSpirals] = useState(true);
+  const [showSbLine, setShowSbLine] = useState(true);
+  const [showCoordE, setShowCoordE] = useState(false);
+
+  const [showReference, setShowReference] = useState(true);
+  const [refLong, setRefLong] = useState(20);
+  const [refLat, setRefLat] = useState(0);
+  const [refVsw, setRefVsw] = useState(400);
+
+  function handleVswInputChange(body, inputValue) {
+    // input value is other than value stored in state
+    if (inputValue !== bodiesVsw[body])
+      setBodiesVsw((prevBodiesVsw) => ({
+        ...prevBodiesVsw,
+        [body]: inputValue,
+      }));
+  }
+
+  function handleRefLongChange(value) {
+    setRefLong(value);
+  }
+
+  function handleRefLatChange(value) {
+    setRefLat(value);
+  }
+
+  function handleRefVswChange(value) {
+    if (value !== refVsw) setRefVsw(value);
+  }
+
+  useEffect(() => {
+    setBodiesVsw((prevBodiesVsw) =>
+      selectedBodies.reduce((map, body) => {
+        // if doesn't exist previously, set to inputNumber's default value i.e. 400
+        map[body] = prevBodiesVsw[body] || 400;
+        return map;
+      }, {})
+    );
+  }, [selectedBodies]);
+
   return (
     <div style={style}>
       <span>
@@ -427,45 +465,92 @@ function Plot2DView({ style, selectedBodies }) {
       {selectedBodies.map((body) => (
         <div key={body}>
           <span>{`${body}: `}</span>
-          <InputNumber type="number" defaultValue={400} min={1} />
+          <InputNumber
+            type="number"
+            defaultValue={400}
+            min={1}
+            data-body={body} // to identify which body's vsw input is for
+            onBlur={(e) =>
+              handleVswInputChange(
+                e.target.dataset.body,
+                e.target.valueAsNumber
+              )
+            }
+          />
         </div>
       ))}
       <br />
 
       <span>Show Parker spirals: </span>
-      <Switch defaultChecked onChange={(f) => f} />
+      <Switch defaultChecked onChange={(checked) => setShowSpirals(checked)} />
       <br />
 
       <span>Show straight line from Sun to Body: </span>
-      <Switch defaultChecked onChange={(f) => f} />
+      <Switch defaultChecked onChange={(checked) => setShowSbLine(checked)} />
       <br />
 
       <span>Show Earth-aligned coordinate system: </span>
-      <Switch onChange={(f) => f} />
+      <Switch onChange={(checked) => setShowCoordE(checked)} />
       <br />
 
       <span>Show a reference (e.g. flare): </span>
-      <Switch defaultChecked onChange={(f) => f} />
+      <Switch
+        defaultChecked
+        onChange={(checked) => setShowReference(checked)}
+      />
       <br />
 
-      <RefCoordInput />
+      <RefCoordInput
+        enabled={showReference}
+        onRefLongChange={handleRefLongChange}
+        onRefLatChange={handleRefLatChange}
+        onRefVswChange={handleRefVswChange}
+      />
 
       <hr />
-      <Plot2DOutput />
+      <Plot2DOutput
+        time={selectedTime}
+        bodies={selectedBodies}
+        bodiesVsw={bodiesVsw}
+        showSpirals={showSpirals}
+        showSbLine={showSbLine}
+        showCoordE={showCoordE}
+        reference={showReference ? { refLong, refLat, refVsw } : {}}
+      />
     </div>
   );
 }
 
-function RefCoordInput() {
+function RefCoordInput({
+  enabled,
+  onRefLongChange,
+  onRefLatChange,
+  onRefVswChange,
+}) {
+  const [activeKey, setActiveKey] = useState([]); // keep all panels collapsed initially
+
+  useEffect(() => {
+    if (!enabled) setActiveKey([]); // collapse all panels
+  }, [enabled]);
+
   return (
-    <Collapse bordered={false}>
-      <Collapse.Panel header="Specify reference coordinates">
+    <Collapse
+      bordered={false}
+      activeKey={activeKey}
+      onChange={(key) => setActiveKey(key)} // so that user action changes active key
+    >
+      <Collapse.Panel
+        header="Specify reference coordinates"
+        collapsible={enabled ? undefined : "disabled"}
+        key="main"
+      >
         <span>Carrington Longitude: </span>
         <Slider
           min={0}
           max={360}
           marks={{ 0: "0°", 90: "90°", 180: "180°", 270: "270°", 360: "360°" }}
           defaultValue={20}
+          onAfterChange={(value) => onRefLongChange(value)}
         />
         <br />
         <span>Carrington Latitude: </span>
@@ -474,37 +559,52 @@ function RefCoordInput() {
           max={90}
           marks={{ "-90": "-90°", 0: "0°", 90: "90°" }}
           defaultValue={0}
+          onAfterChange={(value) => onRefLatChange(value)}
         />
         <span>Solar Wind Speed: </span>
         <br />
-        <InputNumber type="number" defaultValue={400} min={1} />
+        <InputNumber
+          type="number"
+          defaultValue={400}
+          min={1}
+          onBlur={(e) => onRefVswChange(e.target.valueAsNumber)}
+        />
       </Collapse.Panel>
     </Collapse>
   );
 }
 
-function Plot2DOutput() {
+function Plot2DOutput({
+  time,
+  bodies,
+  bodiesVsw,
+  showSpirals,
+  showSbLine,
+  showCoordE,
+  reference,
+}) {
+  const timestamp = moment(time).format("YYYY-MM-DDTHH:mm:ss");
+  const vsw = bodies.map((body) => bodiesVsw[body]);
+  const params = {
+    time: timestamp,
+    bodies,
+    vsw,
+    spirals: showSpirals,
+    sbLine: showSbLine,
+    coordE: showCoordE,
+    ...reference,
+  };
   const orbit2DQuery = useQuery(
-    "orbitTool2D",
+    ["plot2D", params],
     getData({
       apiRoute: "/orbit-tool/2D",
-      getParams: {
-        time: "2020-05-12T13:30:00",
-        bodies: ["PSP", "Earth", "Solar Orbiter", "Venus"],
-        vsw: [400, 400, 900, 400],
-        spirals: true,
-        sbLine: true,
-        coordE: false,
-        refLong: 90,
-        refLat: 20,
-        refVsw: 400,
-      },
+      getParams: params,
       isAnalysisTool: true,
     }),
     { refetchOnWindowFocus: false }
   );
 
   if (orbit2DQuery.isLoading) return <Loading />;
-
+  if (orbit2DQuery.isError) return <Error err={orbit2DQuery.error} />;
   return <img src={orbit2DQuery.data.plot} alt="plot" width="800px" />;
 }
