@@ -80,8 +80,8 @@ function OrbitToolUI({ allBodies }) {
   const [deselectedBody, setDeselectedBody] = useState();
 
   const [selectedTime, setSelectedTime] = useState(
-    moment().startOf("minute").valueOf() // current time with 0 s & 0 ms in UNIX timestamp
-  ); // TODO: make it round off to nearest quarter hour
+    moment().startOf("day").valueOf() // current date with 00:00:00 time in UNIX timestamp
+  );
 
   const [selectedView, setSelectedView] = useState("2d");
 
@@ -118,10 +118,12 @@ function OrbitToolUI({ allBodies }) {
           minuteStep: 15,
           defaultValue: moment("00:00:00", "HH:mm:ss"),
         }}
+        showNow={false}
         onOk={(datetime) => {
           setSelectedTime(datetime.valueOf());
           console.log(datetime);
         }}
+        // TODO: also change state when manually entered (input date & enter key pressed)
       />
       <br />
 
