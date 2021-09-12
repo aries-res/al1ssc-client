@@ -11,6 +11,7 @@ import {
   InputNumber,
   Slider,
   Collapse,
+  Table,
 } from "antd";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
@@ -257,6 +258,8 @@ function Plot3DOutput({
     },
   ]);
 
+  const [tableData, setTableData] = useState([]);
+
   function addBodyTrace({ x, y, z, hovertemplate, customdata, name, color }) {
     const newLineTrace = {
       x,
@@ -283,6 +286,14 @@ function Plot3DOutput({
       showlegend: false,
     };
 
+    const [, lon, lat, dist] = customdata[trackEndIndex];
+    const newRow = {
+      Body: name,
+      "Longitude (°)": lon,
+      "Latitude (°)": lat,
+      "Heliocentric Distance (AU)": dist,
+    };
+
     setPlotData((prevPlotData) => {
       const lineTraceIndex = prevPlotData.findIndex(
         (trace) => trace.name === newLineTrace.name
@@ -300,6 +311,17 @@ function Plot3DOutput({
       console.log(prevNumBodiesPlotted + 1);
       return prevNumBodiesPlotted + 1;
     });
+
+    setTableData((prevTableData) => {
+      const rowIndex = prevTableData.findIndex((row) => row.Body === name);
+
+      if (rowIndex >= 0) {
+        // already exists
+        const newTableData = [...prevTableData];
+        newTableData[rowIndex] = newRow;
+        return newTableData;
+      } else return prevTableData.concat(newRow);
+    });
   }
 
   useEffect(() => {
@@ -313,6 +335,12 @@ function Plot3DOutput({
       setNumBodiesPlotted((prevNumBodiesPlotted) => {
         console.log(prevNumBodiesPlotted - 1);
         return prevNumBodiesPlotted - 1;
+      });
+
+      setTableData((prevTableData) => {
+        const newTableData = prevTableData.filter((row) => row.Body !== body);
+        console.log(newTableData);
+        return newTableData;
       });
     }
 
@@ -391,6 +419,7 @@ function Plot3DOutput({
         totalNumBodies={bodies.length}
       />
       <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
+      <OutputTable data={tableData} />
     </div>
   );
 }
@@ -608,5 +637,35 @@ function Plot2DOutput({
 
   if (orbit2DQuery.isLoading) return <Loading />;
   if (orbit2DQuery.isError) return <Error err={orbit2DQuery.error} />;
-  return <img src={orbit2DQuery.data.plot} alt="plot" width="800px" />;
+  return (
+    <div>
+      <img src={orbit2DQuery.data.plot} alt="plot" width="800px" />
+      <OutputTable data={orbit2DQuery.data.table} />
+    </div>
+  );
+}
+
+function OutputTable({ data }) {
+  if (data.length === 0) return <Table loading />;
+  else {
+    const columns = Object.keys(data[0]).map((col, i) => {
+      const column = {
+        title: col,
+        dataIndex: col,
+      };
+      if (i === 0) return { ...column, fixed: true };
+      else return column;
+    });
+
+    return (
+      <Table
+        dataSource={data}
+        columns={columns}
+        rowKey={(row) => row.Body}
+        pagination={false}
+        bordered
+        scroll={{ x: true }}
+      />
+    );
+  }
 }
