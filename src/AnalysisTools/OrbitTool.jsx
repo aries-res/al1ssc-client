@@ -60,6 +60,14 @@ const sceneAxisLayout = {
   ...sceneAxisColors.white,
 };
 
+const trackThicknesses = [
+  { label: "Very Thin", lineWidth: 1, markerSize: 2 },
+  { label: "Thin", lineWidth: 2, markerSize: 3 },
+  { label: "Medium", lineWidth: 3, markerSize: 4 },
+  { label: "Thick", lineWidth: 4, markerSize: 5 },
+  { label: "Very Thick", lineWidth: 5, markerSize: 6 },
+];
+
 export default function OrbitTool() {
   const bodiesQuery = useQuery(
     "orbit-tool-bodies",
@@ -162,6 +170,7 @@ function Plot3DView({ selectedBodies, deselectedBody, selectedTime, style }) {
 
   const [selectedBgColor, setSelectedBgColor] = useState("white");
   const [showGrid, setShowGrid] = useState(true);
+  const [selectedTrackThickness, setSelectedTrackThickness] = useState(1);
 
   return (
     <div style={style}>
@@ -209,6 +218,20 @@ function Plot3DView({ selectedBodies, deselectedBody, selectedTime, style }) {
 
         <span>Show grid: </span>
         <Switch defaultChecked onChange={(checked) => setShowGrid(checked)} />
+        <br />
+
+        <span>Thickness of orbit tracks: </span>
+        <Select
+          defaultValue={selectedTrackThickness}
+          style={{ width: 150 }}
+          onChange={(value) => setSelectedTrackThickness(value)}
+        >
+          {trackThicknesses.map((thickness, i) => (
+            <Select.Option key={i} value={i}>
+              {thickness.label}
+            </Select.Option>
+          ))}
+        </Select>
       </div>
 
       <hr />
@@ -220,6 +243,7 @@ function Plot3DView({ selectedBodies, deselectedBody, selectedTime, style }) {
         timeStep={selectedTimeStep}
         bgColor={selectedBgColor}
         showGrid={showGrid}
+        trackThickness={selectedTrackThickness}
       />
     </div>
   );
@@ -233,6 +257,7 @@ function Plot3DOutput({
   timeStep,
   bgColor,
   showGrid,
+  trackThickness,
 }) {
   const [numBodiesPlotted, setNumBodiesPlotted] = useState(0);
   const [plotLayout, setPlotLayout] = useState({
@@ -253,7 +278,10 @@ function Plot3DOutput({
       z: [0],
       type: "scatter3d",
       mode: "markers",
-      marker: { color: "orange", size: 5 },
+      marker: {
+        color: "orange",
+        size: trackThicknesses[trackThickness].markerSize + 2,
+      },
       name: "Sun",
     },
   ]);
@@ -270,7 +298,7 @@ function Plot3DOutput({
       name,
       type: "scatter3d",
       mode: "lines",
-      line: { color },
+      line: { color, width: trackThicknesses[trackThickness].lineWidth },
     };
     const trackEndIndex = x.length - 1;
     const newMarkerTrace = {
@@ -282,7 +310,7 @@ function Plot3DOutput({
       name,
       type: "scatter3d",
       mode: "markers",
-      marker: { size: 3, color },
+      marker: { color, size: trackThicknesses[trackThickness].markerSize },
       showlegend: false,
     };
 
@@ -411,6 +439,41 @@ function Plot3DOutput({
       },
     }));
   }, [showGrid]);
+
+  useEffect(() => {
+    // When trackThickness prop changes, update all traces with new thickness
+    setPlotData((prevPlotData) =>
+      prevPlotData.map((trace) => {
+        if (trace.mode === "lines")
+          return {
+            ...trace,
+            line: {
+              ...trace.line,
+              width: trackThicknesses[trackThickness].lineWidth,
+            },
+          };
+        else {
+          // mode === "markers"
+          if (trace.name === "Sun")
+            return {
+              ...trace,
+              marker: {
+                ...trace.marker,
+                size: trackThicknesses[trackThickness].markerSize + 2,
+              },
+            };
+          else
+            return {
+              ...trace,
+              marker: {
+                ...trace.marker,
+                size: trackThicknesses[trackThickness].markerSize,
+              },
+            };
+        }
+      })
+    );
+  }, [trackThickness]);
 
   return (
     <div>
