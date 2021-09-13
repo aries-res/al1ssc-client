@@ -482,6 +482,11 @@ function Plot3DOutput({
         totalNumBodies={bodies.length}
       />
       <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
+      <p>All the coordinates are in Heliocentric Inertial coordinate system.</p>
+      <p>
+        Hover over the orbit tracks in the plot to see the coordinates in
+        (longitude, latitude, distance).
+      </p>
       <OutputTable data={tableData} />
     </div>
   );
@@ -710,6 +715,10 @@ function Plot2DOutput({
   return (
     <div>
       <img src={orbit2DQuery.data.plot} alt="plot" width="800px" />
+      <p>
+        All the coordinates are in Heliographic Carrington coordinate system.
+      </p>
+      <p>This plot is adapted from open-sourced Solar-MACH</p>
       <OutputTable data={orbit2DQuery.data.table} />
     </div>
   );
