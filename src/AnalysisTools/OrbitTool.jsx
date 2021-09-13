@@ -553,26 +553,33 @@ function Plot2DView({ selectedBodies, selectedTime, style }) {
 
   return (
     <div style={style}>
-      <span>
-        Solar wind speed (v<sub>sw</sub>) [in km/s]:
-      </span>
-      {selectedBodies.map((body) => (
-        <div key={body}>
-          <span>{`${body}: `}</span>
-          <InputNumber
-            type="number"
-            defaultValue={400}
-            min={1}
-            data-body={body} // to identify which body's vsw input is for
-            onBlur={(e) =>
-              handleVswInputChange(
-                e.target.dataset.body,
-                e.target.valueAsNumber
-              )
-            }
-          />
-        </div>
-      ))}
+      <Collapse bordered={false}>
+        <Collapse.Panel
+          header={
+            <span>
+              Solar wind speed (v<sub>sw</sub>) [in km/s]
+            </span>
+          }
+        >
+          {selectedBodies.map((body) => (
+            <div key={body}>
+              <span>{`${body}: `}</span>
+              <InputNumber
+                type="number"
+                defaultValue={400}
+                min={1}
+                data-body={body} // to identify which body's vsw input is for
+                onBlur={(e) =>
+                  handleVswInputChange(
+                    e.target.dataset.body,
+                    e.target.valueAsNumber
+                  )
+                }
+              />
+            </div>
+          ))}
+        </Collapse.Panel>
+      </Collapse>
       <br />
 
       <span>Show Parker spirals: </span>
