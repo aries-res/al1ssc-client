@@ -55,7 +55,11 @@ function App() {
 
           {pagesQuery.data.map((pageData) => (
             <Route path={pageData.url}>
-              <Page data={pageData} urlTitleMap={urlTitleMap} />
+              <Page
+                data={pageData}
+                urlTitleMap={urlTitleMap}
+                isMobile={isMobile}
+              />
             </Route>
           ))}
         </Switch>

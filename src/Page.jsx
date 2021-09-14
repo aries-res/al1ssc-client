@@ -11,12 +11,12 @@ import { getData, collectionsApiRequests } from "./apiUtils";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
 
-export default function Page({ data, urlTitleMap }) {
+export default function Page({ data, urlTitleMap, isMobile }) {
   return (
     <div className="home-page-wrapper">
       <div className="home-page" style={{ paddingTop: "32px" }}>
         <PageBreadcrumbs data={data} urlTitleMap={urlTitleMap} />
-        <PageContent data={data.content} />
+        <PageContent data={data.content} isMobile={isMobile} />
       </div>
     </div>
   );
@@ -67,7 +67,7 @@ function PageBreadcrumbs({ data, urlTitleMap }) {
   );
 }
 
-function PageContent({ data }) {
+function PageContent({ data, isMobile }) {
   if (data.length > 0)
     return data.map((contentItem) => {
       if (contentItem.__component === "general.rich-text") {
@@ -87,7 +87,9 @@ function PageContent({ data }) {
       } else if (contentItem.__component === "general.entire-collection") {
         return <EntireCollection collectionType={contentItem.collectionType} />;
       } else if (contentItem.__component === "general.analysis-tool") {
-        return <AnalysisTool toolName={contentItem.toolName} />;
+        return (
+          <AnalysisTool toolName={contentItem.toolName} isMobile={isMobile} />
+        );
       } else return null; // any other component added to CMS but client doesn't yet know how to render it
     });
   else

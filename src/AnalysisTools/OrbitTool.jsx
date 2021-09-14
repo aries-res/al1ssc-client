@@ -19,6 +19,7 @@ import momentTimezone from "moment-timezone";
 import { getData } from "../apiUtils";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
+import "./OrbitTool.less";
 
 momentTimezone.tz.setDefault("Etc/UTC");
 const Plot = createPlotlyComponent(Plotly);
@@ -68,7 +69,15 @@ const trackThicknesses = [
   { label: "Very Thick", lineWidth: 5, markerSize: 6 },
 ];
 
-export default function OrbitTool() {
+const legendAtTopCenter = {
+  orientation: "h",
+  xanchor: "center",
+  x: 0.5,
+  yanchor: "top",
+  y: 1,
+};
+
+export default function OrbitTool({ isMobile }) {
   const bodiesQuery = useQuery(
     "orbit-tool-bodies",
     getData({ apiRoute: "/orbit-tool/bodies", isAnalysisTool: true }),
@@ -78,10 +87,10 @@ export default function OrbitTool() {
   if (bodiesQuery.isLoading) return <Loading />; // TODO: show a UI skeleton instead?
   if (bodiesQuery.error) return <Error err={bodiesQuery.error} />;
 
-  return <OrbitToolUI allBodies={bodiesQuery.data} />;
+  return <OrbitToolUI allBodies={bodiesQuery.data} isMobile={isMobile} />;
 }
 
-function OrbitToolUI({ allBodies }) {
+function OrbitToolUI({ allBodies, isMobile }) {
   const defaultSelectedBodies = allBodies
     .filter((body) => body.plot_by_default)
     .map((body) => body.name);
@@ -158,13 +167,20 @@ function OrbitToolUI({ allBodies }) {
         selectedBodies={selectedBodies}
         deselectedBody={deselectedBody}
         selectedTime={selectedTime}
+        isMobile={isMobile}
         style={{ display: selectedView === "3d" ? "block" : "none" }}
       />
     </div>
   );
 }
 
-function Plot3DView({ selectedBodies, deselectedBody, selectedTime, style }) {
+function Plot3DView({
+  selectedBodies,
+  deselectedBody,
+  selectedTime,
+  isMobile,
+  style,
+}) {
   const [selectedTrackLength, setSelectedTrackLength] = useState(5);
   const [selectedTimeStep, setSelectedTimeStep] = useState("12h");
 
@@ -244,6 +260,7 @@ function Plot3DView({ selectedBodies, deselectedBody, selectedTime, style }) {
         bgColor={selectedBgColor}
         showGrid={showGrid}
         trackThickness={selectedTrackThickness}
+        isMobile={isMobile}
       />
     </div>
   );
@@ -258,17 +275,24 @@ function Plot3DOutput({
   bgColor,
   showGrid,
   trackThickness,
+  isMobile,
 }) {
   const [numBodiesPlotted, setNumBodiesPlotted] = useState(0);
   const [plotLayout, setPlotLayout] = useState({
-    width: 800,
-    height: 600,
+    autosize: true,
     title: "3D Orbit Plot",
     scene: {
       xaxis: { ...sceneAxisLayout, title: "x (AU)" },
       yaxis: { ...sceneAxisLayout, title: "y (AU)" },
       zaxis: { ...sceneAxisLayout, title: "z (AU)" },
     },
+    margin: {
+      l: 5,
+      r: 5,
+      b: 20,
+      t: 80,
+    },
+    ...(isMobile && { legend: legendAtTopCenter }),
   });
 
   const [plotData, setPlotData] = useState([
@@ -475,13 +499,30 @@ function Plot3DOutput({
     );
   }, [trackThickness]);
 
+  useEffect(() => {
+    // when isMobile prop changes, change legend's position in plot layout
+    setPlotLayout((prevPlotLayout) =>
+      isMobile
+        ? { ...prevPlotLayout, legend: legendAtTopCenter }
+        : { ...prevPlotLayout, legend: undefined }
+    );
+  }, [isMobile]);
+
   return (
     <div>
       <Plot3DStatus
         numBodiesPlotted={numBodiesPlotted}
         totalNumBodies={bodies.length}
       />
-      <Plot divId="orbitPlot3D" data={plotData} layout={plotLayout} />
+      <Plot
+        divId="orbitPlot3D"
+        data={plotData}
+        layout={plotLayout}
+        useResizeHandler={true}
+        className={`plot3d-view-plot${
+          isMobile ? " plot3d-view-plot-mobile" : ""
+        }`}
+      />
       <p>All the coordinates are in Heliocentric Inertial coordinate system.</p>
       <p>
         Hover over the orbit tracks in the plot to see the coordinates in
@@ -714,7 +755,11 @@ function Plot2DOutput({
   if (orbit2DQuery.isError) return <Error err={orbit2DQuery.error} />;
   return (
     <div>
-      <img src={orbit2DQuery.data.plot} alt="plot" width="800px" />
+      <img
+        src={orbit2DQuery.data.plot}
+        alt="plot"
+        className="plot2d-view-output-img"
+      />
       <p>
         All the coordinates are in Heliographic Carrington coordinate system.
       </p>
