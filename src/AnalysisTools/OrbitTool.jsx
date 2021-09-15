@@ -16,7 +16,13 @@ import {
   Col,
   Divider,
   Card,
+  Typography,
 } from "antd";
+import {
+  BarChartOutlined,
+  HourglassTwoTone,
+  CheckCircleTwoTone,
+} from "@ant-design/icons";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
 
@@ -30,15 +36,15 @@ const Plot = createPlotlyComponent(Plotly);
 
 // TODO: Add expanded form in duration
 const trackLengths = [
-  { value: "24h", duration: [24, "h"] },
-  { value: "7d", duration: [7, "d"] },
-  { value: "15d", duration: [15, "d"] },
-  { value: "30d", duration: [30, "d"] },
-  { value: "60d", duration: [60, "d"] },
-  { value: "90d", duration: [90, "d"] },
-  { value: "4M", duration: [4, "M"] },
-  { value: "6M", duration: [6, "M"] },
-  { value: "1y", duration: [1, "y"] },
+  { value: "24 hours", duration: [24, "h"] },
+  { value: "7 days", duration: [7, "d"] },
+  { value: "15 days", duration: [15, "d"] },
+  { value: "30 days", duration: [30, "d"] },
+  { value: "60 days", duration: [60, "d"] },
+  { value: "90 days", duration: [90, "d"] },
+  { value: "4 months", duration: [4, "M"] },
+  { value: "6 months", duration: [6, "M"] },
+  { value: "1 year", duration: [1, "y"] },
 ];
 const timeSteps = ["12h", "24h", "48h", "7d", "10d", "15d", "30d", "60d"];
 
@@ -78,7 +84,7 @@ const legendAtTopCenter = {
   xanchor: "center",
   x: 0.5,
   yanchor: "top",
-  y: 1,
+  y: 0.95,
 };
 
 export default function OrbitTool({ isMobile }) {
@@ -207,67 +213,94 @@ function Plot3DView({
 
   return (
     <div style={style}>
-      <div>
-        <span>Length of track: </span>
-        <Select
-          defaultValue={selectedTrackLength}
-          style={{ width: 100 }}
-          onChange={(value) => {
-            setSelectedTrackLength(value);
-            console.log(trackLengths[value]);
-          }}
-        >
-          {trackLengths.map((trackLength, i) => (
-            <Select.Option value={i}>{trackLength.value}</Select.Option>
-          ))}
-        </Select>
-        <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Length of track :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Select
+            defaultValue={selectedTrackLength}
+            className="ot-form-item-select"
+            onChange={(value) => {
+              setSelectedTrackLength(value);
+              console.log(trackLengths[value]);
+            }}
+          >
+            {trackLengths.map((trackLength, i) => (
+              <Select.Option value={i}>{trackLength.value}</Select.Option>
+            ))}
+          </Select>
+        </Col>
+      </Row>
 
-        <span>Time step: </span>
-        <Select
-          defaultValue={selectedTimeStep}
-          style={{ width: 100 }}
-          onChange={(value) => {
-            setSelectedTimeStep(value);
-            console.log(value);
-          }}
-        >
-          {/* TODO: Should be dependent on length of track or error validation */}
-          {timeSteps.map((timeStep) => (
-            <Select.Option value={timeStep}>{timeStep}</Select.Option>
-          ))}
-        </Select>
-        <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Time step :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Select
+            defaultValue={selectedTimeStep}
+            className="ot-form-item-select"
+            onChange={(value) => {
+              setSelectedTimeStep(value);
+              console.log(value);
+            }}
+          >
+            {/* TODO: Should be dependent on length of track or error validation */}
+            {timeSteps.map((timeStep) => (
+              <Select.Option value={timeStep}>{timeStep}</Select.Option>
+            ))}
+          </Select>
+        </Col>
+      </Row>
 
-        <span>Background color: </span>
-        <Radio.Group
-          defaultValue={selectedBgColor}
-          onChange={(e) => setSelectedBgColor(e.target.value)}
-        >
-          <Radio value="white">White</Radio>
-          <Radio value="black">Black</Radio>
-        </Radio.Group>
-        <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Background color :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Radio.Group
+            defaultValue={selectedBgColor}
+            onChange={(e) => setSelectedBgColor(e.target.value)}
+          >
+            <Radio value="white">White</Radio>
+            <Radio value="black">Black</Radio>
+          </Radio.Group>
+        </Col>
+      </Row>
 
-        <span>Show grid: </span>
-        <Switch defaultChecked onChange={(checked) => setShowGrid(checked)} />
-        <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Show grid :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Switch defaultChecked onChange={(checked) => setShowGrid(checked)} />
+        </Col>
+      </Row>
 
-        <span>Thickness of orbit tracks: </span>
-        <Select
-          defaultValue={selectedTrackThickness}
-          style={{ width: 150 }}
-          onChange={(value) => setSelectedTrackThickness(value)}
-        >
-          {trackThicknesses.map((thickness, i) => (
-            <Select.Option key={i} value={i}>
-              {thickness.label}
-            </Select.Option>
-          ))}
-        </Select>
-      </div>
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Thickness of orbit tracks :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Select
+            defaultValue={selectedTrackThickness}
+            className="ot-form-item-select"
+            onChange={(value) => setSelectedTrackThickness(value)}
+          >
+            {trackThicknesses.map((thickness, i) => (
+              <Select.Option key={i} value={i}>
+                {thickness.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </Col>
+      </Row>
 
-      <hr />
+      <Divider className="ot-output-divider">
+        <BarChartOutlined /> 3D Orbit Plot
+      </Divider>
+
       <Plot3DOutput
         bodies={selectedBodies}
         bodyToRemove={deselectedBody}
@@ -297,7 +330,12 @@ function Plot3DOutput({
   const [numBodiesPlotted, setNumBodiesPlotted] = useState(0);
   const [plotLayout, setPlotLayout] = useState({
     autosize: true,
-    title: "3D Orbit Plot",
+    title: {
+      text: `Orbit tracks for a time span of ${trackLength}<br>until ${moment(
+        timeEnd
+      ).format("YYYY-MM-DD HH:mm:ss")} UTC`,
+      size: 15,
+    },
     scene: {
       xaxis: { ...sceneAxisLayout, title: "x (AU)" },
       yaxis: { ...sceneAxisLayout, title: "y (AU)" },
@@ -525,12 +563,26 @@ function Plot3DOutput({
     );
   }, [isMobile]);
 
+  useEffect(() => {
+    // Change plot's title based on timeEnd & trackLength props
+    setPlotLayout((prevPlotLayout) => ({
+      ...prevPlotLayout,
+      title: {
+        ...prevPlotLayout.title,
+        text: `Orbit tracks for a time span of ${
+          trackLengths[trackLength].value
+        }<br>until ${moment(timeEnd).format("YYYY-MM-DD HH:mm:ss")} UTC`,
+      },
+    }));
+  }, [timeEnd, trackLength]);
+
   return (
     <div>
       <Plot3DStatus
         numBodiesPlotted={numBodiesPlotted}
         totalNumBodies={bodies.length}
       />
+      {/* <Divider dashed /> */}
       <Plot
         divId="orbitPlot3D"
         data={plotData}
@@ -540,12 +592,15 @@ function Plot3DOutput({
           isMobile ? " plot3d-view-plot-mobile" : ""
         }`}
       />
-      <p>All the coordinates are in Heliocentric Inertial coordinate system.</p>
-      <p>
+      <Typography.Paragraph type="secondary" className="ot-plot-info">
+        All the coordinates are in <b>Heliocentric Inertial</b> coordinate
+        system.
+      </Typography.Paragraph>
+      <Typography.Paragraph type="secondary" className="ot-plot-info">
         Hover over the orbit tracks in the plot to see the coordinates in
-        (longitude, latitude, distance).
-      </p>
-      <OutputTable data={tableData} />
+        longitude, latitude & distance.
+      </Typography.Paragraph>
+      <OutputTable data={tableData} className="ot-output-table" />
     </div>
   );
 }
@@ -555,17 +610,24 @@ function Plot3DStatus({ numBodiesPlotted, totalNumBodies }) {
     return <p>No bodies selected to plot. Please select atleast one!</p>;
   } else {
     return (
-      <div>
+      <div className="ot-3d-status">
         <Progress
           percent={(numBodiesPlotted * 100) / totalNumBodies}
           steps={totalNumBodies}
           // size="small"
           showInfo={false}
         />
-        <span style={{ marginLeft: "10px" }}>
-          {numBodiesPlotted === totalNumBodies
-            ? "All the specified orbits have been plotted ✅"
-            : "Updating the plot with specified orbits ⏳"}
+        <span className="ot-3d-status-text">
+          {numBodiesPlotted === totalNumBodies ? (
+            <>
+              All the specified orbits have been plotted{" "}
+              <CheckCircleTwoTone twoToneColor="#52c41a" />
+            </>
+          ) : (
+            <>
+              Updating the plot with specified orbits <HourglassTwoTone />
+            </>
+          )}
         </span>
       </div>
     );
@@ -671,7 +733,10 @@ function Plot2DView({ selectedBodies, selectedTime, style }) {
         onRefVswChange={handleRefVswChange}
       />
 
-      <hr />
+      <Divider className="ot-output-divider">
+        <BarChartOutlined /> 2D Orbit Plot
+      </Divider>
+
       <Plot2DOutput
         time={selectedTime}
         bodies={selectedBodies}
@@ -786,7 +851,7 @@ function Plot2DOutput({
   );
 }
 
-function OutputTable({ data }) {
+function OutputTable({ data, className }) {
   if (data.length === 0) return <Table loading />;
   else {
     const columns = Object.keys(data[0]).map((col, i) => {
@@ -806,6 +871,7 @@ function OutputTable({ data }) {
         pagination={false}
         bordered
         scroll={{ x: true }}
+        className={className}
       />
     );
   }
