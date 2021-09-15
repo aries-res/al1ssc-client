@@ -12,6 +12,10 @@ import {
   Slider,
   Collapse,
   Table,
+  Row,
+  Col,
+  Divider,
+  Card,
 } from "antd";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
@@ -105,59 +109,72 @@ function OrbitToolUI({ allBodies, isMobile }) {
 
   console.log("render");
   return (
-    <div>
-      <span>Bodies: </span>
-      <Select
-        mode="multiple"
-        placeholder="Please select bodies to plot"
-        defaultValue={defaultSelectedBodies}
-        style={{ width: 500 }}
-        onChange={(value) => {
-          setSelectedBodies(value);
-          console.log(value);
-        }}
-        onDeselect={(value) => {
-          setDeselectedBody(value);
-          console.log(value);
-        }}
-      >
-        {allBodies.map((body) => (
-          <Select.Option value={body.name}>{body.name}</Select.Option>
-        ))}
-      </Select>
-      <br />
-
-      <span>Time [in UTC]: </span>
-      <DatePicker
-        defaultValue={moment(selectedTime)}
-        allowClear={false}
-        showTime={{
-          format: "HH:mm",
-          minuteStep: 15,
-          defaultValue: moment("00:00:00", "HH:mm:ss"),
-        }}
-        showNow={false}
-        onOk={(datetime) => {
-          setSelectedTime(datetime.valueOf());
-          console.log(datetime);
-        }}
-        // TODO: also change state when manually entered (input date & enter key pressed)
-      />
-      <br />
-
-      <span>Orbit Plot View: </span>
-      <Radio.Group
-        onChange={(e) => {
-          console.log(e.target.value);
-          setSelectedView(e.target.value);
-        }}
-        defaultValue="2d"
-      >
-        <Radio.Button value="2d">2D Plot</Radio.Button>
-        <Radio.Button value="3d">3D Plot</Radio.Button>
-      </Radio.Group>
-      <br />
-      <br />
+    <Card className="ot">
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Bodies :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Select
+            mode="multiple"
+            placeholder="Please select bodies to plot"
+            defaultValue={defaultSelectedBodies}
+            className="ot-form-item-multiselect"
+            onChange={(value) => {
+              setSelectedBodies(value);
+              console.log(value);
+            }}
+            onDeselect={(value) => {
+              setDeselectedBody(value);
+              console.log(value);
+            }}
+          >
+            {allBodies.map((body) => (
+              <Select.Option value={body.name}>{body.name}</Select.Option>
+            ))}
+          </Select>
+        </Col>
+      </Row>
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Time [in UTC] :
+        </Col>
+        <Col xs={24} sm={16}>
+          <DatePicker
+            defaultValue={moment(selectedTime)}
+            allowClear={false}
+            showTime={{
+              format: "HH:mm",
+              minuteStep: 15,
+              defaultValue: moment("00:00:00", "HH:mm:ss"),
+            }}
+            showNow={false}
+            onOk={(datetime) => {
+              setSelectedTime(datetime.valueOf());
+              console.log(datetime);
+            }}
+            // TODO: also change state when manually entered (input date & enter key pressed)
+          />
+        </Col>
+      </Row>
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Orbit Plot View :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Radio.Group
+            onChange={(e) => {
+              console.log(e.target.value);
+              setSelectedView(e.target.value);
+            }}
+            defaultValue="2d"
+          >
+            <Radio.Button value="2d">2D Plot</Radio.Button>
+            <Radio.Button value="3d">3D Plot</Radio.Button>
+          </Radio.Group>
+        </Col>
+      </Row>
+      <Divider />
       <Plot2DView
         selectedBodies={selectedBodies}
         selectedTime={selectedTime}
@@ -170,7 +187,7 @@ function OrbitToolUI({ allBodies, isMobile }) {
         isMobile={isMobile}
         style={{ display: selectedView === "3d" ? "block" : "none" }}
       />
-    </div>
+    </Card>
   );
 }
 

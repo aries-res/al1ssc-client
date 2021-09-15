@@ -1,3 +1,5 @@
+@import "~antd/dist/antd.less";
+
 .plot2d-view {
   &-output-img {
     width: 100%;
@@ -12,5 +14,38 @@
   }
   &-plot-mobile {
     height: 500px;
+  }
+}
+
+.ot {
+  margin: 0 -16px;
+  .ant-card-body {
+    padding: 16px;
+  }
+
+  &-form-item {
+    margin-bottom: 16px;
+    &-label {
+      margin-bottom: 8px;
+    }
+    &-multiselect {
+      width: 100%;
+      max-width: 400px;
+    }
+  }
+}
+
+@media screen and (min-width: @screen-sm) {
+  .ot {
+    margin: 0;
+    .ant-card-body {
+      padding: 24px;
+    }
+
+    &-form-item-label {
+      text-align: end;
+      margin-bottom: 0;
+      padding-right: 16px;
+    }
   }
 }
