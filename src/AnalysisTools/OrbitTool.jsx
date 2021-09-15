@@ -588,8 +588,8 @@ function Plot3DOutput({
         data={plotData}
         layout={plotLayout}
         useResizeHandler={true}
-        className={`plot3d-view-plot${
-          isMobile ? " plot3d-view-plot-mobile" : ""
+        className={`ot-3d-output-plot${
+          isMobile ? " ot-3d-output-plot-mobile" : ""
         }`}
       />
       <Typography.Paragraph type="secondary" className="ot-plot-info">
@@ -678,8 +678,9 @@ function Plot2DView({ selectedBodies, selectedTime, style }) {
 
   return (
     <div style={style}>
-      <Collapse bordered={false}>
+      <Collapse className="ot-form-item-collapse">
         <Collapse.Panel
+          className="ot-form-item-collapse-panel"
           header={
             <span>
               Solar wind speed (v<sub>sw</sub>) [in km/s]
@@ -687,44 +688,75 @@ function Plot2DView({ selectedBodies, selectedTime, style }) {
           }
         >
           {selectedBodies.map((body) => (
-            <div key={body}>
-              <span>{`${body}: `}</span>
-              <InputNumber
-                type="number"
-                defaultValue={400}
-                min={1}
-                data-body={body} // to identify which body's vsw input is for
-                onBlur={(e) =>
-                  handleVswInputChange(
-                    e.target.dataset.body,
-                    e.target.valueAsNumber
-                  )
-                }
-              />
-            </div>
+            <Row key={body} className="ot-form-item">
+              <Col
+                xs={24}
+                sm={8}
+                className="ot-form-item-label"
+              >{`${body} :`}</Col>
+              <Col xs={24} sm={16}>
+                <InputNumber
+                  type="number"
+                  defaultValue={400}
+                  min={1}
+                  data-body={body} // to identify which body's vsw input is for
+                  onBlur={(e) =>
+                    handleVswInputChange(
+                      e.target.dataset.body,
+                      e.target.valueAsNumber
+                    )
+                  }
+                />
+              </Col>
+            </Row>
           ))}
         </Collapse.Panel>
       </Collapse>
-      <br />
 
-      <span>Show Parker spirals: </span>
-      <Switch defaultChecked onChange={(checked) => setShowSpirals(checked)} />
-      <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Show Parker spirals :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Switch
+            defaultChecked
+            onChange={(checked) => setShowSpirals(checked)}
+          />
+        </Col>
+      </Row>
 
-      <span>Show straight line from Sun to Body: </span>
-      <Switch defaultChecked onChange={(checked) => setShowSbLine(checked)} />
-      <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Show straight line from Sun to Body :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Switch
+            defaultChecked
+            onChange={(checked) => setShowSbLine(checked)}
+          />
+        </Col>
+      </Row>
 
-      <span>Show Earth-aligned coordinate system: </span>
-      <Switch onChange={(checked) => setShowCoordE(checked)} />
-      <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Show Earth-aligned coordinate system :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Switch onChange={(checked) => setShowCoordE(checked)} />
+        </Col>
+      </Row>
 
-      <span>Show a reference (e.g. flare): </span>
-      <Switch
-        defaultChecked
-        onChange={(checked) => setShowReference(checked)}
-      />
-      <br />
+      <Row className="ot-form-item">
+        <Col xs={24} sm={8} className="ot-form-item-label">
+          Show a reference (e.g. flare) :
+        </Col>
+        <Col xs={24} sm={16}>
+          <Switch
+            defaultChecked
+            onChange={(checked) => setShowReference(checked)}
+          />
+        </Col>
+      </Row>
 
       <RefCoordInput
         enabled={showReference}
@@ -764,40 +796,65 @@ function RefCoordInput({
 
   return (
     <Collapse
-      bordered={false}
+      className="ot-form-item-collapse"
       activeKey={activeKey}
       onChange={(key) => setActiveKey(key)} // so that user action changes active key
     >
       <Collapse.Panel
-        header="Specify reference coordinates"
+        className="ot-form-item-collapse-panel"
+        header="Coordinates of the reference"
         collapsible={enabled ? undefined : "disabled"}
         key="main"
       >
-        <span>Carrington Longitude: </span>
-        <Slider
-          min={0}
-          max={360}
-          marks={{ 0: "0°", 90: "90°", 180: "180°", 270: "270°", 360: "360°" }}
-          defaultValue={20}
-          onAfterChange={(value) => onRefLongChange(value)}
-        />
-        <br />
-        <span>Carrington Latitude: </span>
-        <Slider
-          min={-90}
-          max={90}
-          marks={{ "-90": "-90°", 0: "0°", 90: "90°" }}
-          defaultValue={0}
-          onAfterChange={(value) => onRefLatChange(value)}
-        />
-        <span>Solar Wind Speed: </span>
-        <br />
-        <InputNumber
-          type="number"
-          defaultValue={400}
-          min={1}
-          onBlur={(e) => onRefVswChange(e.target.valueAsNumber)}
-        />
+        <Row className="ot-form-item">
+          <Col xs={24} sm={8} className="ot-form-item-label">
+            Longitude :
+          </Col>
+          <Col xs={24} sm={16}>
+            <Slider
+              min={0}
+              max={360}
+              marks={{
+                0: "0°",
+                90: "90°",
+                180: "180°",
+                270: "270°",
+                360: "360°",
+              }}
+              defaultValue={20}
+              onAfterChange={(value) => onRefLongChange(value)}
+            />
+          </Col>
+        </Row>
+
+        <Row className="ot-form-item">
+          <Col xs={24} sm={8} className="ot-form-item-label">
+            Latitude :
+          </Col>
+          <Col xs={24} sm={16}>
+            <Slider
+              min={-90}
+              max={90}
+              marks={{ "-90": "-90°", 0: "0°", 90: "90°" }}
+              defaultValue={0}
+              onAfterChange={(value) => onRefLatChange(value)}
+            />
+          </Col>
+        </Row>
+
+        <Row className="ot-form-item">
+          <Col xs={24} sm={8} className="ot-form-item-label">
+            Solar Wind Speed :
+          </Col>
+          <Col xs={24} sm={16}>
+            <InputNumber
+              type="number"
+              defaultValue={400}
+              min={1}
+              onBlur={(e) => onRefVswChange(e.target.valueAsNumber)}
+            />
+          </Col>
+        </Row>
       </Collapse.Panel>
     </Collapse>
   );
@@ -837,16 +894,40 @@ function Plot2DOutput({
   if (orbit2DQuery.isError) return <Error err={orbit2DQuery.error} />;
   return (
     <div>
-      <img
-        src={orbit2DQuery.data.plot}
-        alt="plot"
-        className="plot2d-view-output-img"
+      <div className="ot-2d-output-plot">
+        <img
+          src={orbit2DQuery.data.plot}
+          alt="2D Orbit Plot"
+          className="ot-2d-output-plot-img"
+        />
+      </div>
+
+      <Typography.Paragraph
+        type="secondary"
+        className="ot-plot-info ot-plot-info-2d"
+      >
+        All the coordinates are in <b>Heliographic Carrington</b> coordinate
+        system.
+      </Typography.Paragraph>
+      <Typography.Paragraph
+        type="secondary"
+        className="ot-plot-info ot-plot-info-2d"
+      >
+        This plot is adapted from open-sourced{" "}
+        <a
+          href="https://github.com/esdc-esac-esa-int/Solar-MACH"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Solar-MACH
+        </a>{" "}
+        by ESA.
+      </Typography.Paragraph>
+
+      <OutputTable
+        data={orbit2DQuery.data.table}
+        className="ot-output-table ot-output-table-2d"
       />
-      <p>
-        All the coordinates are in Heliographic Carrington coordinate system.
-      </p>
-      <p>This plot is adapted from open-sourced Solar-MACH</p>
-      <OutputTable data={orbit2DQuery.data.table} />
     </div>
   );
 }
