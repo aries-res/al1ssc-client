@@ -17,11 +17,14 @@ import {
   Divider,
   Card,
   Typography,
+  Image,
+  Button,
 } from "antd";
 import {
   BarChartOutlined,
   HourglassTwoTone,
   CheckCircleTwoTone,
+  ArrowsAltOutlined,
 } from "@ant-design/icons";
 import moment from "moment";
 import momentTimezone from "moment-timezone";
@@ -902,13 +905,7 @@ function Plot2DOutput({
   if (orbit2DQuery.isError) return <Error err={orbit2DQuery.error} />;
   return (
     <div>
-      <div className="ot-2d-output-plot">
-        <img
-          src={orbit2DQuery.data.plot}
-          alt="2D Orbit Plot"
-          className="ot-2d-output-plot-img"
-        />
-      </div>
+      <OutputPlotImage src={orbit2DQuery.data.plot} />
 
       <Typography.Paragraph
         type="secondary"
@@ -936,6 +933,33 @@ function Plot2DOutput({
         data={orbit2DQuery.data.table}
         className="ot-output-table ot-output-table-2d"
       />
+    </div>
+  );
+}
+
+function OutputPlotImage({ src }) {
+  const [visible, setVisible] = useState(false);
+
+  return (
+    <div>
+      <div className="ot-2d-output-plot">
+        <Button
+          title="Enlarge Image"
+          icon={<ArrowsAltOutlined />}
+          className="ot-2d-output-plot-enlarge-btn"
+          onClick={() => setVisible(true)}
+        />
+        <img src={src} alt="2D Orbit Plot" className="ot-2d-output-plot-img" />
+      </div>
+
+      {/* For Image Preview */}
+      <div style={{ display: "none" }}>
+        <Image.PreviewGroup
+          preview={{ visible, onVisibleChange: (vis) => setVisible(vis) }}
+        >
+          <Image src={src} />
+        </Image.PreviewGroup>
+      </div>
     </div>
   );
 }
