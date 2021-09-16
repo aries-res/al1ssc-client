@@ -34,19 +34,24 @@ import "./OrbitTool.less";
 momentTimezone.tz.setDefault("Etc/UTC");
 const Plot = createPlotlyComponent(Plotly);
 
-// TODO: Add expanded form in duration
 const trackLengths = [
-  { value: "24 hours", duration: [24, "h"] },
-  { value: "7 days", duration: [7, "d"] },
-  { value: "15 days", duration: [15, "d"] },
-  { value: "30 days", duration: [30, "d"] },
-  { value: "60 days", duration: [60, "d"] },
-  { value: "90 days", duration: [90, "d"] },
-  { value: "4 months", duration: [4, "M"] },
-  { value: "6 months", duration: [6, "M"] },
-  { value: "1 year", duration: [1, "y"] },
+  { label: "24 hours", duration: [24, "h"] },
+  { label: "7 days", duration: [7, "d"] },
+  { label: "15 days", duration: [15, "d"] },
+  { label: "30 days", duration: [30, "d"] },
+  { label: "60 days", duration: [60, "d"] },
+  { label: "90 days", duration: [90, "d"] },
+  { label: "4 months", duration: [4, "M"] },
+  { label: "6 months", duration: [6, "M"] },
+  { label: "1 year", duration: [1, "y"] },
 ];
-const timeSteps = ["12h", "24h", "48h", "7d", "10d", "15d", "30d", "60d"];
+
+const timeSteps = [
+  { label: "12 hours", value: "12h" },
+  { label: "24 hours", value: "24h" },
+  { label: "2 days", value: "2d" },
+  { label: "3 days", value: "3d" },
+];
 
 const sceneAxisColors = {
   white: {
@@ -136,7 +141,9 @@ function OrbitToolUI({ allBodies, isMobile }) {
             }}
           >
             {allBodies.map((body) => (
-              <Select.Option value={body.name}>{body.name}</Select.Option>
+              <Select.Option value={body.name} key={body.name}>
+                {body.name}
+              </Select.Option>
             ))}
           </Select>
         </Col>
@@ -205,7 +212,7 @@ function Plot3DView({
   style,
 }) {
   const [selectedTrackLength, setSelectedTrackLength] = useState(5);
-  const [selectedTimeStep, setSelectedTimeStep] = useState("12h");
+  const [selectedTimeStep, setSelectedTimeStep] = useState(0);
 
   const [selectedBgColor, setSelectedBgColor] = useState("white");
   const [showGrid, setShowGrid] = useState(true);
@@ -227,7 +234,9 @@ function Plot3DView({
             }}
           >
             {trackLengths.map((trackLength, i) => (
-              <Select.Option value={i}>{trackLength.value}</Select.Option>
+              <Select.Option value={i} key={i}>
+                {trackLength.label}
+              </Select.Option>
             ))}
           </Select>
         </Col>
@@ -247,8 +256,10 @@ function Plot3DView({
             }}
           >
             {/* TODO: Should be dependent on length of track or error validation */}
-            {timeSteps.map((timeStep) => (
-              <Select.Option value={timeStep}>{timeStep}</Select.Option>
+            {timeSteps.map((timeStep, i) => (
+              <Select.Option value={i} key={i}>
+                {timeStep.label}
+              </Select.Option>
             ))}
           </Select>
         </Col>
@@ -464,11 +475,14 @@ function Plot3DOutput({
 
   useQueries(
     bodies.map((body) => {
-      const timeStart = moment(timeEnd)
-        .subtract(...trackLengths[trackLength].duration)
-        .format("YYYY-MM-DDTHH:mm:ss");
-      const timeStop = moment(timeEnd).format("YYYY-MM-DDTHH:mm:ss");
-      const params = { body, timeStart, timeStop, timeStep };
+      const params = {
+        body,
+        timeStart: moment(timeEnd)
+          .subtract(...trackLengths[trackLength].duration)
+          .format("YYYY-MM-DDTHH:mm:ss"),
+        timeStop: moment(timeEnd).format("YYYY-MM-DDTHH:mm:ss"),
+        timeStep: timeSteps[timeStep].value,
+      };
       return {
         queryKey: ["plot3D", params],
         queryFn: getData({
@@ -570,7 +584,7 @@ function Plot3DOutput({
       title: {
         ...prevPlotLayout.title,
         text: `Orbit tracks for a time span of ${
-          trackLengths[trackLength].value
+          trackLengths[trackLength].label
         }<br>until ${moment(timeEnd).format("YYYY-MM-DD HH:mm:ss")} UTC`,
       },
     }));
