@@ -92,7 +92,7 @@ const legendAtTopCenter = {
   xanchor: "center",
   x: 0.5,
   yanchor: "top",
-  y: 0.95,
+  y: 1.06,
 };
 
 export default function OrbitTool({ isMobile }) {
@@ -120,6 +120,12 @@ function OrbitToolUI({ allBodies, isMobile }) {
   );
 
   const [selectedView, setSelectedView] = useState("2d");
+
+  useEffect(() => {
+    // When 3d view is selected, manually trigger window resize event
+    // so that responsive plotly plot can autoscale to 100% width
+    if (selectedView === "3d") window.dispatchEvent(new Event("resize"));
+  }, [selectedView]);
 
   console.log("render");
   return (
@@ -359,7 +365,7 @@ function Plot3DOutput({
       l: 5,
       r: 5,
       b: 20,
-      t: 80,
+      t: 100,
     },
     ...(isMobile && { legend: legendAtTopCenter }),
   });
