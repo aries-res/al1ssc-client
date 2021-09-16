@@ -717,19 +717,16 @@ function Plot2DView({ selectedBodies, selectedTime, style }) {
         <Col xs={24} sm={8} className="ot-form-item-label">
           Show Parker spirals :
         </Col>
-        <Col xs={24} sm={16}>
+        <Col xs={24} sm={3} className="ot-form-item-control-1st">
           <Switch
             defaultChecked
             onChange={(checked) => setShowSpirals(checked)}
           />
         </Col>
-      </Row>
-
-      <Row className="ot-form-item">
         <Col xs={24} sm={8} className="ot-form-item-label">
           Show straight line from Sun to Body :
         </Col>
-        <Col xs={24} sm={16}>
+        <Col xs={24} sm={5}>
           <Switch
             defaultChecked
             onChange={(checked) => setShowSbLine(checked)}
@@ -741,16 +738,13 @@ function Plot2DView({ selectedBodies, selectedTime, style }) {
         <Col xs={24} sm={8} className="ot-form-item-label">
           Show Earth-aligned coordinate system :
         </Col>
-        <Col xs={24} sm={16}>
+        <Col xs={24} sm={3} className="ot-form-item-control-1st">
           <Switch onChange={(checked) => setShowCoordE(checked)} />
         </Col>
-      </Row>
-
-      <Row className="ot-form-item">
         <Col xs={24} sm={8} className="ot-form-item-label">
           Show a reference (e.g. flare) :
         </Col>
-        <Col xs={24} sm={16}>
+        <Col xs={24} sm={5}>
           <Switch
             defaultChecked
             onChange={(checked) => setShowReference(checked)}
