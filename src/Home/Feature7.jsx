@@ -41,7 +41,7 @@ function Feature7(props) {
           >
             {newsPostsQuery.data.map((item, i) => (
               <Col md={8} xs={24} className="feature7-block" key={i.toString()}>
-                <a href="#" className="feature7-block-group">
+                <a href={item.linkOfPost} className="feature7-block-group">
                   <div className="feature7-block-image">
                     <img
                       src="https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg"
@@ -49,10 +49,7 @@ function Feature7(props) {
                     />
                   </div>
                   <h1 class="feature7-block-title">{item.date}</h1>
-                  <div
-                    class="feature7-block-content"
-                    dangerouslySetInnerHTML={{ __html: item.post }}
-                  ></div>
+                  <div class="feature7-block-content">{item.headline}</div>
                 </a>
               </Col>
             ))}

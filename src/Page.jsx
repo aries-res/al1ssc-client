@@ -126,7 +126,7 @@ function EntireCollection({ collectionType }) {
             <List.Item.Meta
               avatar={<CalendarOutlined />}
               title={item.date}
-              description={parse(item.post)}
+              description={<Link to={item.linkOfPost}>{item.headline}</Link>}
             />
           </List.Item>
         )}
