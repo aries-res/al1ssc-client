@@ -15,6 +15,7 @@ import Header from "./Header";
 import { getData } from "./apiUtils";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
+import NotFound from "./components/NotFound";
 
 function App() {
   // Initial value doesn't actually matter since it will be overridden by useEffect
@@ -54,7 +55,7 @@ function App() {
           </Route>
 
           {pagesQuery.data.map((pageData) => (
-            <Route path={pageData.url}>
+            <Route exact path={pageData.url}>
               <Page
                 data={pageData}
                 urlTitleMap={urlTitleMap}
@@ -62,6 +63,10 @@ function App() {
               />
             </Route>
           ))}
+
+          <Route path="*">
+            <NotFound />
+          </Route>
         </Switch>
       </Router>
     </div>
