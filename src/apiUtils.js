@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Link } from "react-router-dom";
 
 const cmsBaseUrl = process.env.REACT_APP_CMS_API_URL;
 const toolsBaseUrl = process.env.REACT_APP_TOOLS_API_URL;
@@ -24,4 +25,13 @@ function getData({ apiRoute, getParams = {}, isAnalysisTool = false } = {}) {
   };
 }
 
-export { cmsBaseUrl, collectionsApiRequests, getData };
+// Internal or External aware Links
+function InExLink(props) {
+  return /^https?:\/\//.test(props.to) ? (
+    <a href={props.to} {...props} target="_blank" rel="noreferrer noopener" />
+  ) : (
+    <Link {...props} />
+  );
+}
+
+export { cmsBaseUrl, collectionsApiRequests, getData, InExLink };

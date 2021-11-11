@@ -7,7 +7,7 @@ import { CalendarOutlined } from "@ant-design/icons";
 
 import "./Page.less";
 import AnalysisTool from "./AnalysisTools";
-import { getData, collectionsApiRequests } from "./apiUtils";
+import { getData, collectionsApiRequests, InExLink } from "./apiUtils";
 import Loading from "./components/Loading";
 import Error from "./components/Error";
 
@@ -126,7 +126,9 @@ function EntireCollection({ collectionType }) {
             <List.Item.Meta
               avatar={<CalendarOutlined />}
               title={item.date}
-              description={<Link to={item.linkOfPost}>{item.headline}</Link>}
+              description={
+                <InExLink to={item.linkOfPost}>{item.headline}</InExLink>
+              }
             />
           </List.Item>
         )}

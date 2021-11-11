@@ -4,7 +4,7 @@ import QueueAnim from "rc-queue-anim";
 import { Row, Col, Button } from "antd";
 import { useQuery } from "react-query";
 
-import { getData, collectionsApiRequests } from "../apiUtils";
+import { getData, collectionsApiRequests, InExLink } from "../apiUtils";
 import Loading from "../components/Loading";
 import Error from "../components/Error";
 
@@ -41,7 +41,7 @@ function Feature7(props) {
           >
             {newsPostsQuery.data.map((item, i) => (
               <Col md={8} xs={24} className="feature7-block" key={i.toString()}>
-                <a href={item.linkOfPost} className="feature7-block-group">
+                <InExLink to={item.linkOfPost} className="feature7-block-group">
                   <div className="feature7-block-image">
                     <img
                       src="https://gw.alipayobjects.com/zos/basement_prod/e339fc34-b022-4cde-9607-675ca9e05231.svg"
@@ -50,7 +50,7 @@ function Feature7(props) {
                   </div>
                   <h1 class="feature7-block-title">{item.date}</h1>
                   <div class="feature7-block-content">{item.headline}</div>
-                </a>
+                </InExLink>
               </Col>
             ))}
           </QueueAnim>
