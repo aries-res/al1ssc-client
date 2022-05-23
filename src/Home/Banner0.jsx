@@ -61,6 +61,9 @@ class Banner extends React.PureComponent {
           <Button ghost key="button" href="#about" className="banner0-button">
             Learn More
           </Button>
+          <Button ghost key="button" href="https://al1ssc.aries.res.in/workshop.html" target="_blank" className="banner0-button">
+            Workshop
+          </Button>
         </QueueAnim>
         <TweenOne
           animation={{
